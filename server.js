@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //  adding routes
-app.use('/restaurant', routes);
+app.use(process.env.BASE_ENDPOINT, routes);
 
 app.on('ready', () => {
   app.listen(process.env.PORT, () => {
