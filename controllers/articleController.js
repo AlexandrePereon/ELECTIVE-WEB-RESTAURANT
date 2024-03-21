@@ -25,6 +25,7 @@ const articleController = {
 
     try {
       const createdArticle = await article.save();
+      console.log("j'ai créé un article");
       return res.json({ id: createdArticle._id });
     } catch (err) {
       return res.status(400).json({ message: err });
