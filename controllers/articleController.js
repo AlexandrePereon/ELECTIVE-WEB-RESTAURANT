@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import Article from '../models/articleModel.js';
 import Restaurant from '../models/restaurantModel.js';
 
@@ -10,17 +9,11 @@ const articleController = {
     const restaurantId = restaurant._id;
     console.log(restaurantId);
 
-    // Vérifier si l'id donné est un object id
-    if (!mongoose.isValidObjectId(restaurantId)) {
-      return res.status(400).json({
-        message: 'Vous n\'avez pas de restaurant',
-      });
-    }
     // Vérifier si le restaurant existe
     const restaurantExists = await Restaurant.findById(restaurantId);
     if (!restaurantExists) {
       return res.status(400).json({
-        message: 'Restaurant not found',
+        message: 'Vous n\'avez pas de restaurant',
       });
     }
 

@@ -28,7 +28,7 @@ const menuController = {
             message: 'Article not found',
           });
         }
-        if (article.restaurant_id.toString() !== restaurantId) {
+        if (article.restaurant_id !== restaurantId) {
           return res.status(400).json({
             message: 'All articles should belong to the same restaurant',
           });
