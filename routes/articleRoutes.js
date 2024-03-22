@@ -106,7 +106,6 @@ articleRouter.delete(`${BASE_URL}/:id`, articleController.delete);
  *               - image
  *               - description
  *               - price
- *               - restaurant_id
  *             properties:
  *               name:
  *                 type: string
@@ -120,9 +119,6 @@ articleRouter.delete(`${BASE_URL}/:id`, articleController.delete);
  *               price:
  *                 type: number
  *                 example: 10.99
- *               restaurant_id:
- *                 type: string
- *                 example: '507f1f77bcf86cd799439011'
  *     responses:
  *       200:
  *         description: Successfully created the new article
