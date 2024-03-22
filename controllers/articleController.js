@@ -63,6 +63,7 @@ const articleController = {
       return res.status(400).json({ message: err.message });
     }
   },
+
   // DELETE /article/:id
   delete: async (req, res) => {
     const { id } = req.params;

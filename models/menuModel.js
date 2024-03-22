@@ -30,10 +30,8 @@ const Menu = mongoose.model('Menu', {
     ref: 'Article',
   }],
   restaurant_id: {
-    type: Number,
-    required: true,
-    unique: false,
-    trim: true,
+    type: Schema.Types.ObjectId,
+    ref: 'Restaurant',
   },
 });
 
