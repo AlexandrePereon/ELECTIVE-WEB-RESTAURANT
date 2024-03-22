@@ -63,4 +63,43 @@ const restaurantRouter = express.Router();
  */
 restaurantRouter.post('/create', userMiddleware, restaurantController.create);
 
+/**
+ * @swagger
+ * /restaurant/{restaurant_id}/articles:
+ *   get:
+ *     summary: Get all articles of a restaurant
+ *     description: This endpoint retrieves all articles belonging to a specific restaurant.
+ *     tags: [Restaurant]
+ *     parameters:
+ *       - in: path
+ *         name: restaurant_id
+ *         required: true
+ *         description: The unique identifier of the restaurant.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all articles of the restaurant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Restaurant'
+ *       404:
+ *         description: No articles found for the restaurant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'No articles found for the restaurant'
+ *     security:
+ *       - BearerAuth: []
+ */
+restaurantRouter.get('/:restaurant_id/articles', restaurantController.findAll);
+
 export default restaurantRouter;

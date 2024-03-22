@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
 
+const { Schema } = mongoose;
+
 const Article = mongoose.model('Article', {
   name: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
     trim: true,
   },
   image: {
@@ -16,14 +18,18 @@ const Article = mongoose.model('Article', {
   description: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
     trim: true,
   },
   price: {
     type: Number,
     required: true,
-    unique: true,
+    unique: false,
     trim: true,
+  },
+  restaurant_id: {
+    type: Schema.Types.ObjectId,
+    ref: 'Restaurant',
   },
 });
 

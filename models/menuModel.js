@@ -16,19 +16,25 @@ const Menu = mongoose.model('Menu', {
   image: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
     trim: true,
   },
   description: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
     trim: true,
   },
   articles: [{
     type: Schema.Types.ObjectId,
     ref: 'Article',
   }],
+  restaurant_id: {
+    type: Number,
+    required: true,
+    unique: false,
+    trim: true,
+  },
 });
 
 export default Menu;
