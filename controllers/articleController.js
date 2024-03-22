@@ -5,12 +5,14 @@ import Restaurant from '../models/restaurantModel.js';
 const articleController = {
   // POST /article/create
   create: async (req, res) => {
+    console.log(req.body.userData);
     const restaurantId = Restaurant.findOne({ createur_id: req.body.userData.id })._id;
-    // Vérifier si l'id donné est un object id
     console.log(restaurantId);
+
+    // Vérifier si l'id donné est un object id
     if (!mongoose.isValidObjectId(restaurantId)) {
       return res.status(400).json({
-        message: 'Invalid restaurant ID',
+        message: 'Vous n\'avez pas de restaurant',
       });
     }
     // Vérifier si le restaurant existe
