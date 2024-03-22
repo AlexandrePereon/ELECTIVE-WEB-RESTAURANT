@@ -1,4 +1,5 @@
 import express from 'express';
+import userMiddleware from '../middlewares/userMiddleware.js';
 import restaurantController from '../controllers/restaurantController.js';
 
 const restaurantRouter = express.Router();
@@ -60,6 +61,6 @@ const restaurantRouter = express.Router();
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.post('/create', restaurantController.create);
+restaurantRouter.post('/create', userMiddleware, restaurantController.create);
 
 export default restaurantRouter;

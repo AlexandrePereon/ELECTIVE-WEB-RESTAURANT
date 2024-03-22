@@ -3,8 +3,7 @@ import Restaurant from '../models/restaurantModel.js';
 const restaurantController = {
   // POST /restaurant/create
   create: async (req, res) => {
-    const userHeader = JSON.parse(req.headers['x-user']);
-    console.log('userHeader', userHeader);
+    console.log(req.body);
     const restaurantExists = await Restaurant.findOne({
       $or: [
         { name: req.body.name },
