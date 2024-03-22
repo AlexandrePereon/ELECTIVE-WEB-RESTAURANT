@@ -34,7 +34,8 @@ const restaurantController = {
 
   // GET /restaurant/:restaurant_id/articles
   findAll: async (req, res) => {
-    const { restaurantId } = req.params;
+    const restaurantId = req.params.restaurant_id;
+
     try {
       const articles = await Article.find({ restaurant_id: restaurantId });
       if (articles.length === 0) {
