@@ -6,7 +6,8 @@ const articleController = {
   // POST /article/create
   create: async (req, res) => {
     console.log(req.body.userData);
-    const restaurantId = Restaurant.findOne({ createur_id: req.body.userData.id })._id;
+    const restaurant = await Restaurant.findOne({ createur_id: req.body.userData.id });
+    const restaurantId = restaurant._id;
     console.log(restaurantId);
 
     // Vérifier si l'id donné est un object id

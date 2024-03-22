@@ -6,7 +6,8 @@ const menuController = {
   // POST /menu/create
   create: async (req, res) => {
     // Trouver l'id du restaurant qui appartient à req.body.userData
-    const restaurantId = Restaurant.findOne({ createur_id: req.body.userData.id })._id;
+    const restaurant = await Restaurant.findOne({ createur_id: req.body.userData.id });
+    const restaurantId = restaurant._id;
 
     // Vérifier qu'il y a plusieurs articles
     if (!Array.isArray(req.body.articles) || req.body.articles.length < 2) {
