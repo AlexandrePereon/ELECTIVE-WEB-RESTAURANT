@@ -1,4 +1,5 @@
 import express from 'express';
+import userMiddleware from '../middlewares/userMiddleware.js';
 import articleController from '../controllers/articleController.js';
 
 const articleRouter = express.Router();
@@ -170,6 +171,6 @@ articleRouter.delete(`${BASE_URL}/:id`, articleController.delete);
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.post(`${BASE_URL}/create`, articleController.create);
+articleRouter.post(`${BASE_URL}/create`, userMiddleware, articleController.create);
 
 export default articleRouter;

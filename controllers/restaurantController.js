@@ -4,7 +4,6 @@ import Article from '../models/articleModel.js';
 const restaurantController = {
   // POST /restaurant/create
   create: async (req, res) => {
-    console.log(req.body);
     const restaurantExists = await Restaurant.findOne({
       $or: [
         { name: req.body.name },

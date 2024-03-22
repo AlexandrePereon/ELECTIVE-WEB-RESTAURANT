@@ -21,7 +21,6 @@ const restaurantRouter = express.Router();
  *               - name
  *               - image
  *               - description
- *               - createur_id
  *             properties:
  *               name:
  *                 type: string
@@ -32,9 +31,6 @@ const restaurantRouter = express.Router();
  *               description:
  *                 type: string
  *                 example: 'This is a fantastic restaurant.'
- *               createur_id:
- *                 type: integer
- *                 example: 123
  *     responses:
  *       200:
  *         description: Successfully created the new restaurant
