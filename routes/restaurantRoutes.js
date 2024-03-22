@@ -57,6 +57,8 @@ const restaurantRouter = express.Router();
  *                   type: string
  *                   description: Detailed error message.
  *                   example: 'Restaurant with the same name already exists'
+ *     security:
+ *       - BearerAuth: []
  */
 restaurantRouter.post('/create', restaurantController.create);
 

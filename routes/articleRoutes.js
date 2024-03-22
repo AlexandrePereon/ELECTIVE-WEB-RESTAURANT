@@ -58,6 +58,8 @@ const BASE_URL = '/article';
  *                   type: string
  *                   description: Detailed error message.
  *                   example: 'Article with the same name already exists'
+ *     security:
+ *       - BearerAuth: []
  */
 articleRouter.post(`${BASE_URL}/create`, articleController.create);
 

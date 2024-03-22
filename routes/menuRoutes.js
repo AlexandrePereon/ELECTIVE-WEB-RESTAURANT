@@ -60,6 +60,8 @@ const BASE_URL = '/menus';
  *                   type: string
  *                   description: Detailed error message.
  *                   example: 'A menu should have at least two articles'
+ *     security:
+ *       - BearerAuth: []
  */
 menuRouter.post(`${BASE_URL}/create`, menuController.create);
 
