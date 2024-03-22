@@ -29,6 +29,7 @@ const menuController = {
           });
         }
         if (article.restaurant_id !== restaurantId) {
+          console.log(article.restaurant_id, restaurantId);
           return res.status(400).json({
             message: 'All articles should belong to the same restaurant',
           });
