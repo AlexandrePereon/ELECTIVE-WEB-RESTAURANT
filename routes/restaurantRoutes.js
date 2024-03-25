@@ -97,6 +97,45 @@ restaurantRouter.post('/create', authMiddleware, restaurantMiddleware, restauran
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.get('/:restaurant_id/articles', restaurantController.findAll);
+restaurantRouter.get('/:restaurant_id/articles', restaurantController.findAllArticles);
+
+/**
+ * @swagger
+ * /restaurant/{restaurant_id}/menus:
+ *   get:
+ *     summary: Get all menus of a restaurant
+ *     description: This endpoint retrieves all menus belonging to a specific restaurant.
+ *     tags: [Restaurant]
+ *     parameters:
+ *       - in: path
+ *         name: restaurant_id
+ *         required: true
+ *         description: The unique identifier of the restaurant.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all menus of the restaurant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Restaurant'
+ *       404:
+ *         description: No menus found for the restaurant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'No menus found for the restaurant'
+ *     security:
+ *       - BearerAuth: []
+ */
+restaurantRouter.get('/:restaurant_id/menus', restaurantController.findAllMenus);
 
 export default restaurantRouter;

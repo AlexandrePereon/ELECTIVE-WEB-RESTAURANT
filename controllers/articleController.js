@@ -1,22 +1,9 @@
 import Article from '../models/articleModel.js';
-import Restaurant from '../models/restaurantModel.js';
 
 const articleController = {
   // POST /article/create
   create: async (req, res) => {
-    console.log(req.body.userData);
-    const restaurant = await Restaurant.findOne({ createur_id: req.body.userData.id });
-    const restaurantId = restaurant._id;
-    console.log(restaurantId);
-
-    // Vérifier si le restaurant existe
-    const restaurantExists = await Restaurant.findById(restaurantId);
-    if (!restaurantExists) {
-      return res.status(400).json({
-        message: 'Vous n\'avez pas de restaurant',
-      });
-    }
-
+    const { restaurant } = req;
     // Vérifier si un article avec le même nom existe déjà
     const articleExists = await Article.findOne({
       $or: [{ name: req.body.name }],
@@ -34,12 +21,12 @@ const articleController = {
       image: req.body.image,
       description: req.body.description,
       price: req.body.price,
-      restaurant_id: restaurantId,
+      restaurant_id: restaurant.id,
     });
 
     try {
       const createdArticle = await article.save();
-      console.log("j'ai créé un article");
+      console.log('un article a été créé avec succès');
       return res.json({ id: createdArticle._id });
     } catch (err) {
       return res.status(400).json({ message: err });
@@ -75,6 +62,34 @@ const articleController = {
       return res.status(400).json({ message: err.message });
     }
   },
+
+  // PUT /article/:id/update
+  update: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+    // Vérifier si l'article existe
+      const article = await Article.findById(id);
+      if (!article) {
+        return res.status(404).json({ message: 'Article not found' });
+      }
+
+      // Mettre à jour les informations de l'article
+      article.name = req.body.name || article.name;
+      article.image = req.body.image || article.image;
+      article.description = req.body.description || article.description;
+      article.price = req.body.price || article.price;
+
+      // Enregistrer les modifications
+      const updatedArticle = await article.save();
+
+      console.log('Article updated');
+      return res.json(updatedArticle);
+    } catch (err) {
+      return res.status(400).json({ message: err.message });
+    }
+  },
+
 };
 
 export default articleController;
