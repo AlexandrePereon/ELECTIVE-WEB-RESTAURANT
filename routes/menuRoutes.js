@@ -101,7 +101,7 @@ menuRouter.post(`${BASE_URL}/create`, authMiddleware, menuController.create);
  *     security:
  *       - BearerAuth: []
  */
-menuRouter.get(`${BASE_URL}/:id`, userMiddleware, menuController.read);
+menuRouter.get(`${BASE_URL}/:id`, authMiddleware, menuController.read);
 
 /**
  * @swagger
@@ -143,6 +143,6 @@ menuRouter.get(`${BASE_URL}/:id`, userMiddleware, menuController.read);
  *     security:
  *       - BearerAuth: []
  */
-menuRouter.delete(`${BASE_URL}/:id`, userMiddleware, menuController.delete);
+menuRouter.delete(`${BASE_URL}/:id`, authMiddleware, menuController.delete);
 
 export default menuRouter;
