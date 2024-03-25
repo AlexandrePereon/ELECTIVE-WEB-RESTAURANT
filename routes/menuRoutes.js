@@ -1,5 +1,5 @@
 import express from 'express';
-import userMiddleware from '../middlewares/userMiddleware.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
 import menuController from '../controllers/menuController.js';
 
 const menuRouter = express.Router();
@@ -64,6 +64,6 @@ const BASE_URL = '/menus';
  *     security:
  *       - BearerAuth: []
  */
-menuRouter.post(`${BASE_URL}/create`, userMiddleware, menuController.create);
+menuRouter.post(`${BASE_URL}/create`, authMiddleware, menuController.create);
 
 export default menuRouter;

@@ -1,5 +1,6 @@
 import express from 'express';
-import userMiddleware from '../middlewares/userMiddleware.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
+import restaurantMiddleware from '../middlewares/restaurantMiddleware.js';
 import restaurantController from '../controllers/restaurantController.js';
 
 const restaurantRouter = express.Router();
@@ -57,7 +58,7 @@ const restaurantRouter = express.Router();
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.post('/create', userMiddleware, restaurantController.create);
+restaurantRouter.post('/create', authMiddleware, restaurantMiddleware, restaurantController.create);
 
 /**
  * @swagger
