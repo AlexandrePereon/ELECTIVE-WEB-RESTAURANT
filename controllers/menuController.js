@@ -1,13 +1,10 @@
 import Menu from '../models/menuModel.js';
 import Article from '../models/articleModel.js';
-import Restaurant from '../models/restaurantModel.js';
 
 const menuController = {
   // POST /menu/create
   create: async (req, res) => {
-    // Trouver l'id du restaurant qui appartient à req.body.userData
-    const restaurant = await Restaurant.findOne({ createur_id: req.body.userData.id });
-    const restaurantId = restaurant._id;
+    const { restaurant } = req;
 
     // Vérifier qu'il y a plusieurs articles
     if (!Array.isArray(req.body.articles) || req.body.articles.length < 2) {
@@ -16,29 +13,34 @@ const menuController = {
       });
     }
 
-    // verifier que tous les articles existent et appartiennent au même restaurant
-    // Calculer le prix total du menu comme la somme des prix de tous les articles
-    let totalPrice = 0;
+    // Vérifier si un article avec le même nom existe déjà
+    const menuExists = await Menu.findOne({
+      $or: [{ name: req.body.name }],
+    });
 
+    if (menuExists) {
+      return res.status(400).json({
+        message: 'This menu already exists',
+      });
+    }
+
+    // vérification que les articles existent et appartiennent au même restaurant
     try {
-      const articlePricePromises = req.body.articles.map(async (articleId) => {
+      req.body.articles.map(async (articleId) => {
         const article = await Article.findById(articleId);
         if (!article) {
           return res.status(400).json({
             message: 'Article not found',
           });
         }
-        if (!article.restaurant_id.equals(restaurantId)) {
-          console.log(article.restaurant_id, restaurantId);
+        if (!article.restaurant_id.equals(restaurant.id)) {
+          console.log(article.restaurant_id, restaurant.id);
           return res.status(400).json({
             message: 'All articles should belong to the same restaurant',
           });
         }
         return article;
       });
-
-      const articles = await Promise.all(articlePricePromises);
-      totalPrice = articles.reduce((total, article) => total + article.price, 0);
     } catch (error) {
       return res.status(400).json({
         message: error.message,
@@ -50,9 +52,9 @@ const menuController = {
       name: req.body.name,
       image: req.body.image,
       description: req.body.description,
-      price: totalPrice,
+      price: 0,
       articles: req.body.articles,
-      restaurant_id: req.body.restaurant_id,
+      restaurant_id: restaurant.id,
     });
 
     try {
@@ -68,7 +70,7 @@ const menuController = {
     const { id } = req.params;
 
     try {
-      const menu = await Menu.findById(id);
+      const menu = await Menu.findById(id).populate('articles');
       if (!menu) {
         return res.status(404).json({ message: 'Menu not found' });
       }
@@ -91,6 +93,52 @@ const menuController = {
       return res.status(400).json({ message: err.message });
     }
   },
+
+  update: async (req, res) => {
+    const { id } = req.params;
+    const { restaurant } = req;
+
+    try {
+      // Vérifier si le menu existe
+      const menu = await Menu.findById(id);
+      if (!menu) {
+        return res.status(404).json({ message: 'Menu not found' });
+      }
+
+      if (req.body.articles) {
+        if (req.body.articles.length < 2) return res.status(400).json({ message: 'Il faut minimum 2 articles dans un menu' });
+        const articlePromises = req.body.articles.map(async (articleId) => {
+          const article = await Article.findById(articleId);
+          if (!article) {
+            return res.status(400).json({ message: 'Article not found' });
+          }
+          if (!article.restaurant_id.equals(restaurant.id)) {
+            return res.status(400).json({ message: 'All articles should belong to the same restaurant' });
+          }
+          return article;
+        });
+
+        // Attendre que toutes les promesses d'articles soient résolues
+        const articles = await Promise.all(articlePromises);
+        menu.articles = articles.map((article) => article._id);
+      }
+
+      // Mettre à jour les informations du menu
+      menu.name = req.body.name || menu.name;
+      menu.image = req.body.image || menu.image;
+      menu.description = req.body.description || menu.description;
+      menu.price = req.body.price || menu.price;
+
+      // Enregistrer les modifications
+      const updatedMenu = await menu.save();
+
+      // Envoyer la réponse une seule fois
+      return res.json(updatedMenu);
+    } catch (err) {
+      return res.status(400).json({ message: err.message });
+    }
+  },
+
 };
 
 export default menuController;

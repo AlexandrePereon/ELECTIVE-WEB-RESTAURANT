@@ -1,6 +1,7 @@
 import express from 'express';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import articleController from '../controllers/articleController.js';
+import restaurantMiddleware from '../middlewares/restaurantMiddleware.js';
 
 const articleRouter = express.Router();
 const BASE_URL = '/article';
@@ -40,7 +41,7 @@ const BASE_URL = '/article';
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.get(`${BASE_URL}/:id`, articleController.read);
+articleRouter.get(`${BASE_URL}/:id`, authMiddleware, articleController.read);
 
 // DELETE /article/:id
 /**
@@ -83,7 +84,7 @@ articleRouter.get(`${BASE_URL}/:id`, articleController.read);
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.delete(`${BASE_URL}/:id`, articleController.delete);
+articleRouter.delete(`${BASE_URL}/:id`, authMiddleware, articleController.delete);
 
 // POST /article/create
 /**
@@ -167,6 +168,100 @@ articleRouter.delete(`${BASE_URL}/:id`, articleController.delete);
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.post(`${BASE_URL}/create`, authMiddleware, articleController.create);
+articleRouter.post(`${BASE_URL}/create`, authMiddleware, restaurantMiddleware, articleController.create);
+
+/**
+ * @swagger
+ * /restaurant/article/{id}:
+ *   put:
+ *     summary: Update an article by ID
+ *     description: This endpoint updates an existing article by its unique identifier.
+ *     tags: [Article]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the article to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The updated name of the article.
+ *               image:
+ *                 type: string
+ *                 description: The updated image URL of the article.
+ *               description:
+ *                 type: string
+ *                 description: The updated description of the article.
+ *               price:
+ *                 type: number
+ *                 description: The updated price of the article.
+ *     responses:
+ *       200:
+ *         description: Successfully updated the article
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: The ID of the updated article.
+ *                 name:
+ *                   type: string
+ *                   description: The updated name of the article.
+ *                 image:
+ *                   type: string
+ *                   description: The updated image URL of the article.
+ *                 description:
+ *                   type: string
+ *                   description: The updated description of the article.
+ *                 price:
+ *                   type: number
+ *                   description: The updated price of the article.
+ *       400:
+ *         description: Bad request or validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Invalid data provided'
+ *       403:
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: "Vous n'êtes pas autorisé à modifier cet article"
+ *       404:
+ *         description: Article not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Article not found'
+ *     security:
+ *       - BearerAuth: []
+ */
+articleRouter.put(`${BASE_URL}/:id`, authMiddleware, restaurantMiddleware, articleController.update);
 
 export default articleRouter;
