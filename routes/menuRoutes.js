@@ -66,4 +66,83 @@ const BASE_URL = '/menus';
  */
 menuRouter.post(`${BASE_URL}/create`, authMiddleware, menuController.create);
 
+/**
+ * @swagger
+ * /restaurant/menus/{id}:
+ *   get:
+ *     summary: Get a menu by ID
+ *     description: This endpoint retrieves a menu by its unique identifier.
+ *     tags: [Menu]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the menu.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the menu
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Menu'
+ *       404:
+ *         description: Menu not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Menu not found'
+ *     security:
+ *       - BearerAuth: []
+ */
+menuRouter.get(`${BASE_URL}/:id`, userMiddleware, menuController.read);
+
+/**
+ * @swagger
+ * /restaurant/menus/{id}:
+ *   delete:
+ *     summary: Delete a menu by ID
+ *     description: This endpoint deletes a menu by its unique identifier.
+ *     tags: [Menu]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the menu.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the menu
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Success message.
+ *                   example: 'Menu deleted successfully'
+ *       404:
+ *         description: Menu not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Menu not found'
+ *     security:
+ *       - BearerAuth: []
+ */
+menuRouter.delete(`${BASE_URL}/:id`, userMiddleware, menuController.delete);
+
 export default menuRouter;

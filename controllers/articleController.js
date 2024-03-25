@@ -1,22 +1,19 @@
-import mongoose from 'mongoose';
 import Article from '../models/articleModel.js';
 import Restaurant from '../models/restaurantModel.js';
 
 const articleController = {
   // POST /article/create
   create: async (req, res) => {
-    // Vérifier si l'id donné est un object id
-    console.log(req.body.restaurant_id);
-    if (!mongoose.isValidObjectId(req.body.restaurant_id)) {
-      return res.status(400).json({
-        message: 'Invalid restaurant ID',
-      });
-    }
+    console.log(req.body.userData);
+    const restaurant = await Restaurant.findOne({ createur_id: req.body.userData.id });
+    const restaurantId = restaurant._id;
+    console.log(restaurantId);
+
     // Vérifier si le restaurant existe
-    const restaurantExists = await Restaurant.findById(req.body.restaurant_id);
+    const restaurantExists = await Restaurant.findById(restaurantId);
     if (!restaurantExists) {
       return res.status(400).json({
-        message: 'Restaurant not found',
+        message: 'Vous n\'avez pas de restaurant',
       });
     }
 
@@ -37,7 +34,7 @@ const articleController = {
       image: req.body.image,
       description: req.body.description,
       price: req.body.price,
-      restaurant_id: req.body.restaurant_id,
+      restaurant_id: restaurantId,
     });
 
     try {
@@ -63,6 +60,7 @@ const articleController = {
       return res.status(400).json({ message: err.message });
     }
   },
+
   // DELETE /article/:id
   delete: async (req, res) => {
     const { id } = req.params;
