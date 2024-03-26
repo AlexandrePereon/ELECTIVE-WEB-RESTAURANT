@@ -24,10 +24,6 @@ const BASE_URL = '/article';
  *     responses:
  *       200:
  *         description: Successfully retrieved the article
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Article'
  *       404:
  *         description: Article not found
  *         content:

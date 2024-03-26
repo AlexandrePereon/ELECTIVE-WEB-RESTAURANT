@@ -97,10 +97,6 @@ menuRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware, ha
  *     responses:
  *       200:
  *         description: Successfully retrieved the menu
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Menu'
  *       404:
  *         description: Menu not found
  *         content:

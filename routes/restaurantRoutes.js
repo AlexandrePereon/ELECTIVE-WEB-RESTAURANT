@@ -78,12 +78,6 @@ restaurantRouter.post('/create', authMiddleware, isRestaurantMiddleware, hasNotR
  *     responses:
  *       200:
  *         description: Successfully retrieved all articles of the restaurant
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Restaurant'
  *       404:
  *         description: No articles found for the restaurant
  *         content:
@@ -117,12 +111,6 @@ restaurantRouter.get('/:restaurant_id/articles', restaurantController.findAllArt
  *     responses:
  *       200:
  *         description: Successfully retrieved all menus of the restaurant
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Restaurant'
  *       404:
  *         description: No menus found for the restaurant
  *         content:
