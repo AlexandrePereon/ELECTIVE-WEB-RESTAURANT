@@ -52,7 +52,7 @@ const menuController = {
       name: req.body.name,
       image: req.body.image,
       description: req.body.description,
-      price: 0,
+      price: req.body.price,
       articles: req.body.articles,
       restaurant_id: restaurant.id,
     });

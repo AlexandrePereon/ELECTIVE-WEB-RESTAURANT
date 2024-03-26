@@ -11,7 +11,12 @@ const BASE_URL = '/menu';
  * /restaurant/menu/create:
  *   post:
  *     summary: Create a new menu
- *     description: This endpoint creates a new menu with the provided name, image, description, and list of articles. It checks if the list of articles contains at least two articles and calculates the total price of the menu as the sum of the prices of all the articles. Upon successful creation, it returns the unique identifier of the new menu.
+ *     description: >
+ *       This endpoint creates a new menu with the provided name, image, description,
+ *       list of articles, and total price. It checks if the list of articles contains
+ *       at least two articles and calculates the total price of the menu as the sum
+ *       of the prices of all the articles. Upon successful creation, it returns the
+ *       unique identifier of the new menu.
  *     tags: [Menu]
  *     requestBody:
  *       required: true
@@ -27,18 +32,25 @@ const BASE_URL = '/menu';
  *             properties:
  *               name:
  *                 type: string
- *                 example: 'Menu ABC'
+ *                 example: "Menu ABC"
  *               image:
  *                 type: string
- *                 example: 'https://example.com/menu.jpg'
+ *                 example: "https://example.com/menu.jpg"
  *               description:
  *                 type: string
- *                 example: 'This is a fantastic menu.'
+ *                 example: "This is a fantastic menu."
+ *               price:
+ *                 type: number
+ *                 format: float
+ *                 description: The total price of the menu
+ *                 example: 25.99
  *               articles:
  *                 type: array
  *                 items:
  *                   type: string
- *                 example: ['articleId1', 'articleId2']
+ *                 minItems: 2
+ *                 example: ["articleId1", "articleId2"]
+ *
  *     responses:
  *       200:
  *         description: Successfully created the new menu
@@ -50,7 +62,7 @@ const BASE_URL = '/menu';
  *                 id:
  *                   type: string
  *                   description: The unique identifier of the newly created menu.
- *                   example: '507f1f77bcf86cd799439011'
+ *                   example: "507f1f77bcf86cd799439011"
  *       400:
  *         description: Bad Request - The list of articles should contain at least two articles, or an article was not found, or other validation errors
  *         content:
@@ -61,7 +73,7 @@ const BASE_URL = '/menu';
  *                 message:
  *                   type: string
  *                   description: Detailed error message.
- *                   example: 'A menu should have at least two articles'
+ *                   example: "A menu should have at least two articles"
  *     security:
  *       - BearerAuth: []
  */
