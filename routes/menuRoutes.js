@@ -1,7 +1,8 @@
 import express from 'express';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import menuController from '../controllers/menuController.js';
-import restaurantMiddleware from '../middlewares/restaurantMiddleware.js';
+import isRestaurantMiddleware from '../middlewares/isRestaurantMiddleware.js';
+import hasRestaurantMiddleware from '../middlewares/hasRestaurantMiddleware.js';
 
 const menuRouter = express.Router();
 const BASE_URL = '/menu';
@@ -77,7 +78,7 @@ const BASE_URL = '/menu';
  *     security:
  *       - BearerAuth: []
  */
-menuRouter.post(`${BASE_URL}/create`, authMiddleware, restaurantMiddleware, menuController.create);
+menuRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, menuController.create);
 
 /**
  * @swagger
@@ -114,7 +115,7 @@ menuRouter.post(`${BASE_URL}/create`, authMiddleware, restaurantMiddleware, menu
  *     security:
  *       - BearerAuth: []
  */
-menuRouter.get(`${BASE_URL}/:id`, authMiddleware, restaurantMiddleware, menuController.read);
+menuRouter.get(`${BASE_URL}/:id`, menuController.read);
 
 /**
  * @swagger
@@ -156,7 +157,7 @@ menuRouter.get(`${BASE_URL}/:id`, authMiddleware, restaurantMiddleware, menuCont
  *     security:
  *       - BearerAuth: []
  */
-menuRouter.delete(`${BASE_URL}/:id`, authMiddleware, restaurantMiddleware, menuController.delete);
+menuRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, menuController.delete);
 
 /**
  * @swagger
@@ -260,6 +261,6 @@ menuRouter.delete(`${BASE_URL}/:id`, authMiddleware, restaurantMiddleware, menuC
  *     security:
  *       - BearerAuth: []
  */
-menuRouter.put(`${BASE_URL}/:id`, authMiddleware, restaurantMiddleware, menuController.update);
+menuRouter.put(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, menuController.update);
 
 export default menuRouter;

@@ -39,6 +39,7 @@ const restaurantController = {
 
     try {
       const createdRestaurant = await restaurant.save();
+      console.log('Restaurant créée : ', createdRestaurant._id);
       return res.json({ id: createdRestaurant._id });
     } catch (err) {
       return res.status(400).json({ message: err });

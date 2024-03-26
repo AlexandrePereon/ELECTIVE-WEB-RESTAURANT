@@ -26,7 +26,7 @@ const articleController = {
 
     try {
       const createdArticle = await article.save();
-      console.log('un article a été créé avec succès');
+      console.log('Article créé avec succès : ', createdArticle._id);
       return res.json({ id: createdArticle._id });
     } catch (err) {
       return res.status(400).json({ message: err });
@@ -56,7 +56,7 @@ const articleController = {
       if (!article) {
         return res.status(404).json({ message: 'Article not found' });
       }
-      console.log('Article deleted');
+      console.log('Article supprimé : ', article._id);
       return res.json({ message: 'Article deleted successfully' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
@@ -83,7 +83,7 @@ const articleController = {
       // Enregistrer les modifications
       const updatedArticle = await article.save();
 
-      console.log('Article updated');
+      console.log('Article modifié : ', updatedArticle._id);
       return res.json(updatedArticle);
     } catch (err) {
       return res.status(400).json({ message: err.message });

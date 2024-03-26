@@ -1,7 +1,8 @@
 import express from 'express';
 import authMiddleware from '../middlewares/authMiddleware.js';
 import articleController from '../controllers/articleController.js';
-import restaurantMiddleware from '../middlewares/restaurantMiddleware.js';
+import isRestaurantMiddleware from '../middlewares/isRestaurantMiddleware.js';
+import hasRestaurantMiddleware from '../middlewares/hasRestaurantMiddleware.js';
 
 const articleRouter = express.Router();
 const BASE_URL = '/article';
@@ -41,7 +42,7 @@ const BASE_URL = '/article';
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.get(`${BASE_URL}/:id`, authMiddleware, articleController.read);
+articleRouter.get(`${BASE_URL}/:id`, articleController.read);
 
 // DELETE /article/:id
 /**
@@ -84,7 +85,7 @@ articleRouter.get(`${BASE_URL}/:id`, authMiddleware, articleController.read);
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.delete(`${BASE_URL}/:id`, authMiddleware, articleController.delete);
+articleRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, articleController.delete);
 
 // POST /article/create
 /**
@@ -168,7 +169,7 @@ articleRouter.delete(`${BASE_URL}/:id`, authMiddleware, articleController.delete
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.post(`${BASE_URL}/create`, authMiddleware, restaurantMiddleware, articleController.create);
+articleRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, articleController.create);
 
 /**
  * @swagger
@@ -262,6 +263,6 @@ articleRouter.post(`${BASE_URL}/create`, authMiddleware, restaurantMiddleware, a
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.put(`${BASE_URL}/:id`, authMiddleware, restaurantMiddleware, articleController.update);
+articleRouter.put(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, articleController.update);
 
 export default articleRouter;

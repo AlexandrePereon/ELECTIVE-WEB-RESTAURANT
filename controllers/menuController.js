@@ -59,6 +59,7 @@ const menuController = {
 
     try {
       const createdMenu = await menu.save();
+      console.log('Menu créée : ', createdMenu._id);
       return res.json({ id: createdMenu._id });
     } catch (err) {
       return res.status(400).json({ message: err.message });
@@ -87,7 +88,7 @@ const menuController = {
       if (!menu) {
         return res.status(404).json({ message: 'Menu not found' });
       }
-      console.log('Menu deleted');
+      console.log('Menu supprimé : ', menu._id);
       return res.json({ message: 'Menu deleted successfully' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
@@ -132,7 +133,7 @@ const menuController = {
       // Enregistrer les modifications
       const updatedMenu = await menu.save();
 
-      // Envoyer la réponse une seule fois
+      console.log('Menu modifié : ', updatedMenu._id);
       return res.json(updatedMenu);
     } catch (err) {
       return res.status(400).json({ message: err.message });
