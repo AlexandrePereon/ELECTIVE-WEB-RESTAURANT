@@ -75,6 +75,33 @@ const restaurantController = {
       return res.status(400).json({ message: err.message });
     }
   },
+
+  // PUT /restaurant/:id
+  update: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+    // Vérifier si l'article existe
+      const restaurant = await Restaurant.findById(id);
+      if (!restaurant) {
+        return res.status(404).json({ message: 'Restaurant not found' });
+      }
+
+      // Mettre à jour les informations du restaurant
+      restaurant.name = req.body.name || restaurant.name;
+      restaurant.image = req.body.image || restaurant.image;
+      restaurant.description = req.body.description || restaurant.description;
+      restaurant.price = req.body.price || restaurant.price;
+
+      // Enregistrer les modifications
+      const updatedRestaurant = await restaurant.save();
+
+      console.log('Restaurant modifié : ', updatedRestaurant._id);
+      return res.json(updatedRestaurant);
+    } catch (err) {
+      return res.status(400).json({ message: err.message });
+    }
+  },
 };
 
 export default restaurantController;

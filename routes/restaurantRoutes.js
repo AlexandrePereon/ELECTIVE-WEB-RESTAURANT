@@ -3,6 +3,7 @@ import authMiddleware from '../middlewares/authMiddleware.js';
 import restaurantController from '../controllers/restaurantController.js';
 import isRestaurantMiddleware from '../middlewares/isRestaurantMiddleware.js';
 import hasNotRestaurantMiddleware from '../middlewares/hasNotRestaurantMiddleware.js';
+import hasRestaurantMiddleware from '../middlewares/hasRestaurantMiddleware.js';
 
 const restaurantRouter = express.Router();
 
@@ -126,5 +127,88 @@ restaurantRouter.get('/:restaurant_id/articles', restaurantController.findAllArt
  *       - BearerAuth: []
  */
 restaurantRouter.get('/:restaurant_id/menus', restaurantController.findAllMenus);
+
+/**
+ * @swagger
+ * /restaurant/{id}:
+ *   put:
+ *     summary: Update a restaurant by ID
+ *     description: This endpoint updates an existing restaurant by its unique identifier.
+ *     tags: [Restaurant]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the restaurant to update.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The updated name of the restaurant.
+ *               image:
+ *                 type: string
+ *                 description: The updated image URL of the restaurant.
+ *               description:
+ *                 type: string
+ *                 description: The updated description of the restaurant.
+ *               price:
+ *                 type: number
+ *                 description: The updated price of the restaurant.
+ *     responses:
+ *       200:
+ *         description: Successfully updated the restaurant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: The ID of the updated restaurant.
+ *                 name:
+ *                   type: string
+ *                   description: The updated name of the restaurant.
+ *                 image:
+ *                   type: string
+ *                   description: The updated image URL of the restaurant.
+ *                 description:
+ *                   type: string
+ *                   description: The updated description of the restaurant.
+ *                 price:
+ *                   type: number
+ *                   description: The updated price of the restaurant.
+ *       400:
+ *         description: Bad request or validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Invalid data provided'
+ *       404:
+ *         description: Restaurant not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Restaurant not found'
+ *     security:
+ *       - BearerAuth: []
+ */
+restaurantRouter.put('/:id', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.update);
 
 export default restaurantRouter;

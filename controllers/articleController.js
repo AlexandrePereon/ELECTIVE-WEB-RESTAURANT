@@ -63,7 +63,7 @@ const articleController = {
     }
   },
 
-  // PUT /article/:id/update
+  // PUT /article/:id
   update: async (req, res) => {
     const { id } = req.params;
 
@@ -83,7 +83,7 @@ const articleController = {
       // Enregistrer les modifications
       const updatedArticle = await article.save();
 
-      console.log('Article modifié : ', updatedArticle._id);
+      console.log('Article modifié : ', article._id);
       return res.json(updatedArticle);
     } catch (err) {
       return res.status(400).json({ message: err.message });
