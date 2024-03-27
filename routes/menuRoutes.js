@@ -19,6 +19,8 @@ const BASE_URL = '/menu';
  *       of the prices of all the articles. Upon successful creation, it returns the
  *       unique identifier of the new menu.
  *     tags: [Menu]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -64,6 +66,10 @@ const BASE_URL = '/menu';
  *                   type: string
  *                   description: The unique identifier of the newly created menu.
  *                   example: "507f1f77bcf86cd799439011"
+ *                 message:
+ *                   type: string
+ *                   description: Confirmation message.
+ *                   example: "Menu created successfully"
  *       400:
  *         description: Bad Request - The list of articles should contain at least two articles, or an article was not found, or other validation errors
  *         content:
@@ -75,8 +81,6 @@ const BASE_URL = '/menu';
  *                   type: string
  *                   description: Detailed error message.
  *                   example: "A menu should have at least two articles"
- *     security:
- *       - BearerAuth: []
  */
 menuRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, menuController.create);
 

@@ -60,7 +60,7 @@ const menuController = {
     try {
       const createdMenu = await menu.save();
       console.log('Menu créée : ', createdMenu._id);
-      return res.json({ id: createdMenu._id });
+      return res.json({ id: createdMenu._id, message: 'Menu créé avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }

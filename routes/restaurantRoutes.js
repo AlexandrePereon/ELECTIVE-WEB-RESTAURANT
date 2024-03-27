@@ -12,8 +12,13 @@ const restaurantRouter = express.Router();
  * /restaurant/create:
  *   post:
  *     summary: Create a new restaurant
- *     description: This endpoint creates a new restaurant with the provided name, image, description, and creator id. It checks if a restaurant with the same name already exists to avoid duplicates. Upon successful creation, it returns the unique identifier of the new restaurant.
+ *     description: >
+ *       This endpoint creates a new restaurant with the provided name, image, description, and creator id.
+ *       It checks if a restaurant with the same name already exists to avoid duplicates.
+ *       Upon successful creation, it returns the unique identifier of the new restaurant.
  *     tags: [Restaurant]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -27,13 +32,13 @@ const restaurantRouter = express.Router();
  *             properties:
  *               name:
  *                 type: string
- *                 example: 'Restaurant ABC'
+ *                 example: "Restaurant ABC"
  *               image:
  *                 type: string
- *                 example: 'https://example.com/restaurant.jpg'
+ *                 example: "https://example.com/restaurant.jpg"
  *               description:
  *                 type: string
- *                 example: 'This is a fantastic restaurant.'
+ *                 example: "This is a fantastic restaurant."
  *     responses:
  *       200:
  *         description: Successfully created the new restaurant
@@ -45,7 +50,11 @@ const restaurantRouter = express.Router();
  *                 id:
  *                   type: string
  *                   description: The unique identifier of the newly created restaurant.
- *                   example: '507f1f77bcf86cd799439011'
+ *                   example: "507f1f77bcf86cd799439011"
+ *                 message:
+ *                   type: string
+ *                   description: Confirmation message.
+ *                   example: "Restaurant created successfully"
  *       400:
  *         description: Bad Request - Restaurant with the same name already exists, or other validation errors
  *         content:
@@ -56,9 +65,7 @@ const restaurantRouter = express.Router();
  *                 message:
  *                   type: string
  *                   description: Detailed error message.
- *                   example: 'Restaurant with the same name already exists'
- *     security:
- *       - BearerAuth: []
+ *                   example: "Restaurant with the same name already exists"
  */
 restaurantRouter.post('/create', authMiddleware, isRestaurantMiddleware, hasNotRestaurantMiddleware, restaurantController.create);
 
