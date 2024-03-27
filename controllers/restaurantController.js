@@ -103,12 +103,12 @@ const restaurantController = {
     }
   },
 
-  // GET /restaurant/getByCreatorId
+  // GET /restaurant/creator/:creator_id
   getByCreatorId: async (req, res) => {
-    const { id } = req.body.userData;
+    const userId = req.params.creator_id;
 
     try {
-      const restaurant = await Restaurant.findOne({ createur_id: id });
+      const restaurant = await Restaurant.findOne({ createur_id: userId });
       if (!restaurant) {
         return res.status(404).json({ message: 'Restaurant not found' });
       }

@@ -213,34 +213,25 @@ restaurantRouter.put('/:id', authMiddleware, isRestaurantMiddleware, hasRestaura
 
 /**
  * @swagger
- * /restaurant/getByCreatorId:
+ * /restaurant/creator/{creator_id}:
  *   get:
  *     summary: Get a restaurant by creator ID
- *     description: This endpoint retrieves a restaurant based on the ID of its creator.
+ *     description: Retrieve a restaurant based on the creator's ID.
  *     tags: [Restaurant]
+ *     parameters:
+ *       - in: path
+ *         name: creator_id
+ *         required: true
+ *         description: The unique identifier of the restaurant's creator.
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successfully retrieved the restaurant
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 _id:
- *                   type: string
- *                   description: The ID of the restaurant.
- *                 name:
- *                   type: string
- *                   description: The name of the restaurant.
- *                 image:
- *                   type: string
- *                   description: The image URL of the restaurant.
- *                 description:
- *                   type: string
- *                   description: The description of the restaurant.
- *                 price:
- *                   type: number
- *                   description: The price of the restaurant.
+ *               $ref: '#/components/schemas/Restaurant'
  *       404:
  *         description: Restaurant not found
  *         content:
@@ -252,9 +243,20 @@ restaurantRouter.put('/:id', authMiddleware, isRestaurantMiddleware, hasRestaura
  *                   type: string
  *                   description: Detailed error message.
  *                   example: 'Restaurant not found'
+ *       400:
+ *         description: Bad request or validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Invalid request'
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.get('/getByCreatorId', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.getByCreatorId);
+restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId);
 
 export default restaurantRouter;
