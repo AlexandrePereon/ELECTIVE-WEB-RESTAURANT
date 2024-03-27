@@ -117,6 +117,16 @@ const restaurantController = {
       return res.status(400).json({ message: err.message });
     }
   },
+
+  // GET /restaurant/all
+  findAllRestaurants: async (_req, res) => {
+    try {
+      const restaurants = await Restaurant.find({});
+      return res.json(restaurants);
+    } catch (err) {
+      return res.status(400).json({ message: err.message });
+    }
+  },
 };
 
 export default restaurantController;

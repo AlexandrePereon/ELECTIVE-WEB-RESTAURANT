@@ -266,4 +266,36 @@ restaurantRouter.put('/:id', authMiddleware, isRestaurantMiddleware, hasRestaura
  */
 restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId);
 
+/**
+ * @swagger
+ * /restaurant/all:
+ *   get:
+ *     summary: Get all restaurants
+ *     description: This endpoint retrieves all restaurants available in the system.
+ *     tags: [Restaurant]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all restaurants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Restaurant'
+ *       400:
+ *         description: Bad Request - Error while retrieving restaurants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Error while retrieving restaurants'
+ *     security:
+ *       - BearerAuth: []
+ */
+restaurantRouter.get('/all', restaurantController.findAllRestaurants);
+
 export default restaurantRouter;
