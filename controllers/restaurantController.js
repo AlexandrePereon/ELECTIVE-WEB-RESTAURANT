@@ -102,6 +102,21 @@ const restaurantController = {
       return res.status(400).json({ message: err.message });
     }
   },
+
+  // GET /restaurant/getByCreatorId
+  getByCreatorId: async (req, res) => {
+    const { id } = req.body.userData;
+
+    try {
+      const restaurant = await Restaurant.findOne({ createur_id: id });
+      if (!restaurant) {
+        return res.status(404).json({ message: 'Restaurant not found' });
+      }
+      return res.json(restaurant);
+    } catch (err) {
+      return res.status(400).json({ message: err.message });
+    }
+  },
 };
 
 export default restaurantController;

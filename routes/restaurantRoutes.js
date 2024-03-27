@@ -211,4 +211,50 @@ restaurantRouter.get('/:restaurant_id/menus', restaurantController.findAllMenus)
  */
 restaurantRouter.put('/:id', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.update);
 
+/**
+ * @swagger
+ * /restaurant/getByCreatorId:
+ *   get:
+ *     summary: Get a restaurant by creator ID
+ *     description: This endpoint retrieves a restaurant based on the ID of its creator.
+ *     tags: [Restaurant]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the restaurant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: The ID of the restaurant.
+ *                 name:
+ *                   type: string
+ *                   description: The name of the restaurant.
+ *                 image:
+ *                   type: string
+ *                   description: The image URL of the restaurant.
+ *                 description:
+ *                   type: string
+ *                   description: The description of the restaurant.
+ *                 price:
+ *                   type: number
+ *                   description: The price of the restaurant.
+ *       404:
+ *         description: Restaurant not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Restaurant not found'
+ *     security:
+ *       - BearerAuth: []
+ */
+restaurantRouter.get('/getByCreatorId', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.getByCreatorId);
+
 export default restaurantRouter;
