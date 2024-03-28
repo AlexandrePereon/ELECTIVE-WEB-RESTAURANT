@@ -40,7 +40,7 @@ const restaurantController = {
     try {
       const createdRestaurant = await restaurant.save();
       console.log('Restaurant créée : ', createdRestaurant._id);
-      return res.json({ id: createdRestaurant._id });
+      return res.json({ id: createdRestaurant._id, message: 'Restaurant créé avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err });
     }
@@ -103,16 +103,26 @@ const restaurantController = {
     }
   },
 
-  // GET /restaurant/getByCreatorId
+  // GET /restaurant/creator/:creator_id
   getByCreatorId: async (req, res) => {
-    const { id } = req.body.userData;
+    const userId = req.params.creator_id;
 
     try {
-      const restaurant = await Restaurant.findOne({ createur_id: id });
+      const restaurant = await Restaurant.findOne({ createur_id: userId });
       if (!restaurant) {
         return res.status(404).json({ message: 'Restaurant not found' });
       }
       return res.json(restaurant);
+    } catch (err) {
+      return res.status(400).json({ message: err.message });
+    }
+  },
+
+  // GET /restaurant/all
+  findAllRestaurants: async (_req, res) => {
+    try {
+      const restaurants = await Restaurant.find({});
+      return res.json(restaurants);
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }

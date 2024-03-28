@@ -12,8 +12,13 @@ const restaurantRouter = express.Router();
  * /restaurant/create:
  *   post:
  *     summary: Create a new restaurant
- *     description: This endpoint creates a new restaurant with the provided name, image, description, and creator id. It checks if a restaurant with the same name already exists to avoid duplicates. Upon successful creation, it returns the unique identifier of the new restaurant.
+ *     description: >
+ *       This endpoint creates a new restaurant with the provided name, image, description, and creator id.
+ *       It checks if a restaurant with the same name already exists to avoid duplicates.
+ *       Upon successful creation, it returns the unique identifier of the new restaurant.
  *     tags: [Restaurant]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -27,13 +32,13 @@ const restaurantRouter = express.Router();
  *             properties:
  *               name:
  *                 type: string
- *                 example: 'Restaurant ABC'
+ *                 example: "Restaurant ABC"
  *               image:
  *                 type: string
- *                 example: 'https://example.com/restaurant.jpg'
+ *                 example: "https://example.com/restaurant.jpg"
  *               description:
  *                 type: string
- *                 example: 'This is a fantastic restaurant.'
+ *                 example: "This is a fantastic restaurant."
  *     responses:
  *       200:
  *         description: Successfully created the new restaurant
@@ -45,7 +50,11 @@ const restaurantRouter = express.Router();
  *                 id:
  *                   type: string
  *                   description: The unique identifier of the newly created restaurant.
- *                   example: '507f1f77bcf86cd799439011'
+ *                   example: "507f1f77bcf86cd799439011"
+ *                 message:
+ *                   type: string
+ *                   description: Confirmation message.
+ *                   example: "Restaurant created successfully"
  *       400:
  *         description: Bad Request - Restaurant with the same name already exists, or other validation errors
  *         content:
@@ -56,9 +65,7 @@ const restaurantRouter = express.Router();
  *                 message:
  *                   type: string
  *                   description: Detailed error message.
- *                   example: 'Restaurant with the same name already exists'
- *     security:
- *       - BearerAuth: []
+ *                   example: "Restaurant with the same name already exists"
  */
 restaurantRouter.post('/create', authMiddleware, isRestaurantMiddleware, hasNotRestaurantMiddleware, restaurantController.create);
 
@@ -213,34 +220,25 @@ restaurantRouter.put('/:id', authMiddleware, isRestaurantMiddleware, hasRestaura
 
 /**
  * @swagger
- * /restaurant/getByCreatorId:
+ * /restaurant/creator/{creator_id}:
  *   get:
  *     summary: Get a restaurant by creator ID
- *     description: This endpoint retrieves a restaurant based on the ID of its creator.
+ *     description: Retrieve a restaurant based on the creator's ID.
  *     tags: [Restaurant]
+ *     parameters:
+ *       - in: path
+ *         name: creator_id
+ *         required: true
+ *         description: The unique identifier of the restaurant's creator.
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Successfully retrieved the restaurant
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 _id:
- *                   type: string
- *                   description: The ID of the restaurant.
- *                 name:
- *                   type: string
- *                   description: The name of the restaurant.
- *                 image:
- *                   type: string
- *                   description: The image URL of the restaurant.
- *                 description:
- *                   type: string
- *                   description: The description of the restaurant.
- *                 price:
- *                   type: number
- *                   description: The price of the restaurant.
+ *               $ref: '#/components/schemas/Restaurant'
  *       404:
  *         description: Restaurant not found
  *         content:
@@ -252,9 +250,52 @@ restaurantRouter.put('/:id', authMiddleware, isRestaurantMiddleware, hasRestaura
  *                   type: string
  *                   description: Detailed error message.
  *                   example: 'Restaurant not found'
+ *       400:
+ *         description: Bad request or validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Invalid request'
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.get('/getByCreatorId', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.getByCreatorId);
+restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId);
+
+/**
+ * @swagger
+ * /restaurant/all:
+ *   get:
+ *     summary: Get all restaurants
+ *     description: This endpoint retrieves all restaurants available in the system.
+ *     tags: [Restaurant]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved all restaurants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Restaurant'
+ *       400:
+ *         description: Bad Request - Error while retrieving restaurants
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Error while retrieving restaurants'
+ *     security:
+ *       - BearerAuth: []
+ */
+restaurantRouter.get('/all', restaurantController.findAllRestaurants);
 
 export default restaurantRouter;

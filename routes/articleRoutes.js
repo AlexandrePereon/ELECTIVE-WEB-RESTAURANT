@@ -90,9 +90,11 @@ articleRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, 
  *   post:
  *     summary: Create a new article
  *     description: |
- *       This endpoint creates a new article with the provided name, image, description, price, and associated restaurant ID.
- *       It checks if the provided restaurant ID exists before creating the article to ensure data integrity.
+ *       This endpoint creates a new article with the provided name, image, description, and price, associated with the authenticated restaurant.
+ *       It checks if an article with the same name already exists and ensures data integrity by associating the article with the authenticated restaurant.
  *     tags: [Article]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -129,8 +131,12 @@ articleRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, 
  *                   type: string
  *                   description: The unique identifier of the newly created article.
  *                   example: '507f1f77bcf86cd799439011'
+ *                 message:
+ *                   type: string
+ *                   description: Confirmation message.
+ *                   example: 'Article created successfully'
  *       400:
- *         description: Bad Request - Invalid request body or missing restaurant ID
+ *         description: Bad Request - Invalid request body or article with the same name already exists
  *         content:
  *           application/json:
  *             schema:
@@ -139,7 +145,7 @@ articleRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, 
  *                 message:
  *                   type: string
  *                   description: Detailed error message.
- *                   example: 'Restaurant ID is required'
+ *                   example: 'This article already exists'
  *       404:
  *         description: Restaurant not found
  *         content:
@@ -151,20 +157,8 @@ articleRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, 
  *                   type: string
  *                   description: Detailed error message.
  *                   example: 'Restaurant not found'
- *       409:
- *         description: Conflict - Article with the same name already exists
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Detailed error message.
- *                   example: 'This article already exists'
- *     security:
- *       - BearerAuth: []
  */
+
 articleRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, articleController.create);
 
 /**
