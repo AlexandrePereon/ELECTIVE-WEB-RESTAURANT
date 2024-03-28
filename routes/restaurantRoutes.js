@@ -235,10 +235,6 @@ restaurantRouter.put('/:id', authMiddleware, isRestaurantMiddleware, hasRestaura
  *     responses:
  *       200:
  *         description: Successfully retrieved the restaurant
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Restaurant'
  *       404:
  *         description: Restaurant not found
  *         content:
@@ -276,12 +272,6 @@ restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId
  *     responses:
  *       200:
  *         description: Successfully retrieved all restaurants
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Restaurant'
  *       400:
  *         description: Bad Request - Error while retrieving restaurants
  *         content:

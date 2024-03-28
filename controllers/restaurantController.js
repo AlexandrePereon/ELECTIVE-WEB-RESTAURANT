@@ -1,6 +1,7 @@
 import Restaurant from '../models/restaurantModel.js';
 import Article from '../models/articleModel.js';
 import Menu from '../models/menuModel.js';
+import logger from '../utils/logger/logger.js';
 
 const restaurantController = {
   // POST /restaurant/create
@@ -39,7 +40,7 @@ const restaurantController = {
 
     try {
       const createdRestaurant = await restaurant.save();
-      console.log('Restaurant créée : ', createdRestaurant._id);
+      logger.log('info', `Restaurant créée : ${createdRestaurant._id}`);
       return res.json({ id: createdRestaurant._id, message: 'Restaurant créé avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err });
@@ -96,7 +97,7 @@ const restaurantController = {
       // Enregistrer les modifications
       const updatedRestaurant = await restaurant.save();
 
-      console.log('Restaurant modifié : ', updatedRestaurant._id);
+      logger.log('info', `Restaurant modifié : ${updatedRestaurant._id}`);
       return res.json(updatedRestaurant);
     } catch (err) {
       return res.status(400).json({ message: err.message });

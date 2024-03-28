@@ -1,5 +1,6 @@
 import Menu from '../models/menuModel.js';
 import Article from '../models/articleModel.js';
+import logger from '../utils/logger/logger.js';
 
 const menuController = {
   // POST /menu/create
@@ -59,7 +60,7 @@ const menuController = {
 
     try {
       const createdMenu = await menu.save();
-      console.log('Menu créée : ', createdMenu._id);
+      logger.log('info', `Menu créé avec succès : ${createdMenu._id}`);
       return res.json({ id: createdMenu._id, message: 'Menu créé avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
@@ -88,7 +89,7 @@ const menuController = {
       if (!menu) {
         return res.status(404).json({ message: 'Menu not found' });
       }
-      console.log('Menu supprimé : ', menu._id);
+      logger.log('info', `Menu supprimé : ${menu._id}`);
       return res.json({ message: 'Menu deleted successfully' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
@@ -133,7 +134,7 @@ const menuController = {
       // Enregistrer les modifications
       const updatedMenu = await menu.save();
 
-      console.log('Menu modifié : ', updatedMenu._id);
+      logger.log('info', `Menu modifié : ${updatedMenu._id}`);
       return res.json(updatedMenu);
     } catch (err) {
       return res.status(400).json({ message: err.message });

@@ -1,4 +1,5 @@
 import Article from '../models/articleModel.js';
+import logger from '../utils/logger/logger.js';
 
 const articleController = {
   // POST /article/create
@@ -26,7 +27,7 @@ const articleController = {
 
     try {
       const createdArticle = await article.save();
-      console.log('Article créé avec succès : ', createdArticle._id);
+      logger.log('info', `Article créé avec succès : ${createdArticle._id}`);
       return res.json({ id: createdArticle._id, message: 'Article créé avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err });
@@ -56,7 +57,8 @@ const articleController = {
       if (!article) {
         return res.status(404).json({ message: 'Article not found' });
       }
-      console.log('Article supprimé : ', article._id);
+      logger.log('info', `Article supprimé : ${article._id}`);
+
       return res.json({ message: 'Article deleted successfully' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
@@ -82,8 +84,8 @@ const articleController = {
 
       // Enregistrer les modifications
       const updatedArticle = await article.save();
+      logger.log('info', `Article modifié : ${article._id}`);
 
-      console.log('Article modifié : ', article._id);
       return res.json(updatedArticle);
     } catch (err) {
       return res.status(400).json({ message: err.message });

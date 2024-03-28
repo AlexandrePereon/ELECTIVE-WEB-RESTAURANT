@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import connect from './db/index.js';
 import routes from './routes/index.js';
 import prometheusRouter from './routes/prometheusRoutes.js';
+import logger from './utils/logger/logger.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -28,7 +29,7 @@ app.use(prometheusRouter);
 
 app.on('ready', () => {
   app.listen(process.env.PORT, () => {
-    console.log('Server is up on port', (process.env.PORT));
+    logger.log('info', `Server is up on port : ${process.env.PORT}`);
   });
 });
 
