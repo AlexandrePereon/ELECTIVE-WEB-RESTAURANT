@@ -15,7 +15,7 @@ const restaurantController = {
 
     if (restaurantExists) {
       return res.status(400).json({
-        message: 'The user already has a restaurant',
+        message: 'Vous avez déjà créé un restaurant',
       });
     }
 
@@ -27,7 +27,7 @@ const restaurantController = {
 
     if (restaurantNameExists) {
       return res.status(400).json({
-        message: 'The restaurant already exists',
+        message: 'Ce nom de restaurant existe déjà',
       });
     }
 
@@ -53,31 +53,51 @@ const restaurantController = {
     }
   },
 
-  // GET /restaurant/:restaurant_id/articles
+  // GET /restaurant/:restaurantId/articles/:page
   findAllArticles: async (req, res) => {
-    const restaurantId = req.params.restaurant_id;
+    const { page, restaurantId } = req.params || 1;
+    const limit = 5;
+    const skip = (page - 1) * limit;
 
     try {
-      const articles = await Article.find({ restaurant_id: restaurantId });
-      if (articles.length === 0) {
-        return res.status(404).json({ message: 'No articles found for the restaurant' });
+      const count = await Article.countDocuments({ restaurant_id: restaurantId });
+
+      if (count === 0) {
+        return res.status(404).json({ message: 'Pas d\'articles trouvés pour le restaurant' });
       }
-      return res.json(articles);
+
+      const articles = await Article.find({ restaurant_id: restaurantId }).limit(limit).skip(skip);
+      const maxPage = Math.ceil(count / limit);
+
+      if (maxPage === 0) {
+        return res.status(404).json({ message: 'Numero de page invalide' });
+      }
+
+      return res.status(200).json({ articles, maxPage, count });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }
   },
 
-  // GET /restaurant/:restaurant_id/menus
+  // GET /restaurant/:restaurantId/menus/:page
   findAllMenus: async (req, res) => {
-    const restaurantId = req.params.restaurant_id;
+    const { page, restaurantId } = req.params || 1;
+    const limit = 5;
+    const skip = (page - 1) * limit;
 
     try {
-      const menus = await Menu.find({ restaurant_id: restaurantId });
-      if (menus.length === 0) {
-        return res.status(404).json({ message: 'No menus found for the restaurant' });
+      const count = await Menu.countDocuments({ restaurant_id: restaurantId });
+      if (count === 0) {
+        return res.status(404).json({ message: 'Pas de menus trouvés pour le restaurant' });
       }
-      return res.json(menus);
+
+      const menus = await Menu.find({ restaurant_id: restaurantId }).limit(limit).skip(skip);
+      const maxPage = Math.ceil(count / limit);
+      if (maxPage === 0) {
+        return res.status(404).json({ message: 'Numero de page invalide' });
+      }
+
+      return res.status(200).json({ menus, maxPage, count });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }
@@ -91,7 +111,7 @@ const restaurantController = {
     // Vérifier si l'article existe
       const restaurant = await Restaurant.findById(id);
       if (!restaurant) {
-        return res.status(404).json({ message: 'Restaurant not found' });
+        return res.status(404).json({ message: 'Pas de restaurant trouvé' });
       }
 
       let { image } = req.body;
@@ -122,7 +142,7 @@ const restaurantController = {
     try {
       const restaurant = await Restaurant.findOne({ createur_id: userId });
       if (!restaurant) {
-        return res.status(404).json({ message: 'Restaurant not found' });
+        return res.status(404).json({ message: 'Pas de restaurant trouvé pour cet utilisateur' });
       }
       return res.json(restaurant);
     } catch (err) {
@@ -130,11 +150,24 @@ const restaurantController = {
     }
   },
 
-  // GET /restaurant/all
-  findAllRestaurants: async (_req, res) => {
+  // GET /restaurant/all/:page
+  findAllRestaurants: async (req, res) => {
+    const { page } = req.params || 1;
+    const limit = 5;
+    const skip = (page - 1) * limit;
     try {
-      const restaurants = await Restaurant.find({});
-      return res.json(restaurants);
+      const count = await Restaurant.countDocuments({});
+      if (count === 0) {
+        return res.status(404).json({ message: 'Pas de restaurants trouvés' });
+      }
+
+      const restaurants = await Restaurant.find({}).limit(limit).skip(skip);
+      const maxPage = Math.ceil(count / limit);
+      if (maxPage === 0) {
+        return res.status(404).json({ message: 'Numero de page invalide' });
+      }
+
+      return res.status(200).json({ restaurants, maxPage, count });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }

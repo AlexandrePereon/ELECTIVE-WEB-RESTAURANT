@@ -71,18 +71,24 @@ restaurantRouter.post('/create', authMiddleware, isRestaurantMiddleware, hasNotR
 
 /**
  * @swagger
- * /restaurant/{restaurant_id}/articles:
+ * /restaurant/{restaurantId}/articles/{page}:
  *   get:
  *     summary: Get all articles of a restaurant
  *     description: This endpoint retrieves all articles belonging to a specific restaurant.
  *     tags: [Restaurant]
  *     parameters:
  *       - in: path
- *         name: restaurant_id
+ *         name: restaurantId
  *         required: true
  *         description: The unique identifier of the restaurant.
  *         schema:
  *           type: string
+ *       - in: path
+ *         name: page
+ *         required: true
+ *         description: The page number to retrieve the articles.
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
  *         description: Successfully retrieved all articles of the restaurant
@@ -100,22 +106,28 @@ restaurantRouter.post('/create', authMiddleware, isRestaurantMiddleware, hasNotR
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.get('/:restaurant_id/articles', restaurantController.findAllArticles);
+restaurantRouter.get('/:restaurantId/articles/:page', restaurantController.findAllArticles);
 
 /**
  * @swagger
- * /restaurant/{restaurant_id}/menus:
+ * /restaurant/{restaurantId}/menus/{page}:
  *   get:
  *     summary: Get all menus of a restaurant
  *     description: This endpoint retrieves all menus belonging to a specific restaurant.
  *     tags: [Restaurant]
  *     parameters:
  *       - in: path
- *         name: restaurant_id
+ *         name: restaurantId
  *         required: true
  *         description: The unique identifier of the restaurant.
  *         schema:
  *           type: string
+ *       - in: path
+ *         name: page
+ *         required: true
+ *         description: The page number to retrieve the articles.
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
  *         description: Successfully retrieved all menus of the restaurant
@@ -133,7 +145,7 @@ restaurantRouter.get('/:restaurant_id/articles', restaurantController.findAllArt
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.get('/:restaurant_id/menus', restaurantController.findAllMenus);
+restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllMenus);
 
 /**
  * @swagger
@@ -222,11 +234,18 @@ restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId
 
 /**
  * @swagger
- * /restaurant/all:
+ * /restaurant/all/{page}:
  *   get:
  *     summary: Get all restaurants
  *     description: This endpoint retrieves all restaurants available in the system.
  *     tags: [Restaurant]
+ *     parameters:
+ *       - in: path
+ *         name: page
+ *         required: true
+ *         description: The page number to retrieve the articles.
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
  *         description: Successfully retrieved all restaurants
@@ -244,6 +263,6 @@ restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.get('/all', restaurantController.findAllRestaurants);
+restaurantRouter.get('/all/:page', restaurantController.findAllRestaurants);
 
 export default restaurantRouter;
