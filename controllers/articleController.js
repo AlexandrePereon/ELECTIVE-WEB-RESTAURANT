@@ -1,4 +1,5 @@
 import Article from '../models/articleModel.js';
+import { image2WebpProduits } from '../utils/converter/imageConverter.js';
 import logger from '../utils/logger/logger.js';
 
 const articleController = {
@@ -16,10 +17,15 @@ const articleController = {
       });
     }
 
+    let { image } = req.body;
+    if (image) {
+      image = await image2WebpProduits(image);
+    }
+
     // Créer un nouvel article
     const article = new Article({
       name: req.body.name,
-      image: req.body.image,
+      image,
       description: req.body.description,
       price: req.body.price,
       restaurant_id: restaurant.id,
@@ -76,9 +82,14 @@ const articleController = {
         return res.status(404).json({ message: 'Article not found' });
       }
 
+      let { image } = req.body;
+      if (image) {
+        image = await image2WebpProduits(image);
+      }
+
       // Mettre à jour les informations de l'article
       article.name = req.body.name || article.name;
-      article.image = req.body.image || article.image;
+      article.image = image || article.image;
       article.description = req.body.description || article.description;
       article.price = req.body.price || article.price;
 

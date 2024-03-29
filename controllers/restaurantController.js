@@ -2,6 +2,7 @@ import Restaurant from '../models/restaurantModel.js';
 import Article from '../models/articleModel.js';
 import Menu from '../models/menuModel.js';
 import logger from '../utils/logger/logger.js';
+import { image2WebpRestaurant } from '../utils/converter/imageConverter.js';
 
 const restaurantController = {
   // POST /restaurant/create
@@ -30,10 +31,15 @@ const restaurantController = {
       });
     }
 
+    let { image } = req.body;
+    if (image) {
+      image = await image2WebpRestaurant(image);
+    }
+
     // create new restaurant
     const restaurant = new Restaurant({
       name: req.body.name,
-      image: req.body.image,
+      image,
       description: req.body.description,
       createur_id: req.body.userData.id,
     });
@@ -88,9 +94,14 @@ const restaurantController = {
         return res.status(404).json({ message: 'Restaurant not found' });
       }
 
+      let { image } = req.body;
+      if (image) {
+        image = await image2WebpRestaurant(image);
+      }
+
       // Mettre à jour les informations du restaurant
       restaurant.name = req.body.name || restaurant.name;
-      restaurant.image = req.body.image || restaurant.image;
+      restaurant.image = image || restaurant.image;
       restaurant.description = req.body.description || restaurant.description;
       restaurant.price = req.body.price || restaurant.price;
 

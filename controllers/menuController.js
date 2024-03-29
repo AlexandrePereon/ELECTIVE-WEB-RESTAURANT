@@ -1,6 +1,7 @@
 import Menu from '../models/menuModel.js';
 import Article from '../models/articleModel.js';
 import logger from '../utils/logger/logger.js';
+import { image2WebpProduits } from '../utils/converter/imageConverter.js';
 
 const menuController = {
   // POST /menu/create
@@ -48,10 +49,15 @@ const menuController = {
       });
     }
 
+    let { image } = req.body;
+    if (image) {
+      image = await image2WebpProduits(image);
+    }
+
     // Créer le nouveau menu
     const menu = new Menu({
       name: req.body.name,
-      image: req.body.image,
+      image,
       description: req.body.description,
       price: req.body.price,
       articles: req.body.articles,
@@ -125,9 +131,14 @@ const menuController = {
         menu.articles = articles.map((article) => article._id);
       }
 
+      let { image } = req.body;
+      if (image) {
+        image = await image2WebpProduits(image);
+      }
+
       // Mettre à jour les informations du menu
       menu.name = req.body.name || menu.name;
-      menu.image = req.body.image || menu.image;
+      menu.image = image || menu.image;
       menu.description = req.body.description || menu.description;
       menu.price = req.body.price || menu.price;
 
