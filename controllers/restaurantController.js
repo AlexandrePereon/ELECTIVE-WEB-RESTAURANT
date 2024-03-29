@@ -51,6 +51,9 @@ const restaurantController = {
   findAllArticles: async (req, res) => {
     const { page, restaurantId } = req.params || 1;
     const limit = 5;
+
+    if (page < 1) return res.status(404).json({ message: 'Numero de page invalide' });
+
     const skip = (page - 1) * limit;
 
     try {
@@ -63,7 +66,7 @@ const restaurantController = {
       const articles = await Article.find({ restaurant_id: restaurantId }).limit(limit).skip(skip);
       const maxPage = Math.ceil(count / limit);
 
-      if (maxPage === 0) {
+      if (page > maxPage) {
         return res.status(404).json({ message: 'Numero de page invalide' });
       }
 
@@ -77,6 +80,9 @@ const restaurantController = {
   findAllMenus: async (req, res) => {
     const { page, restaurantId } = req.params || 1;
     const limit = 5;
+
+    if (page < 1) return res.status(404).json({ message: 'Numero de page invalide' });
+
     const skip = (page - 1) * limit;
 
     try {
@@ -87,7 +93,7 @@ const restaurantController = {
 
       const menus = await Menu.find({ restaurant_id: restaurantId }).limit(limit).skip(skip);
       const maxPage = Math.ceil(count / limit);
-      if (maxPage === 0) {
+      if (page > maxPage) {
         return res.status(404).json({ message: 'Numero de page invalide' });
       }
 
@@ -143,6 +149,9 @@ const restaurantController = {
   findAllRestaurants: async (req, res) => {
     const { page } = req.params || 1;
     const limit = 5;
+
+    if (page < 1) return res.status(404).json({ message: 'Numero de page invalide' });
+
     const skip = (page - 1) * limit;
     try {
       const count = await Restaurant.countDocuments({});
@@ -152,7 +161,7 @@ const restaurantController = {
 
       const restaurants = await Restaurant.find({}).limit(limit).skip(skip);
       const maxPage = Math.ceil(count / limit);
-      if (maxPage === 0) {
+      if (page > maxPage) {
         return res.status(404).json({ message: 'Numero de page invalide' });
       }
 
