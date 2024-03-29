@@ -218,48 +218,6 @@ restaurantRouter.get('/:restaurant_id/menus', restaurantController.findAllMenus)
  */
 restaurantRouter.put('/:id', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.update);
 
-/**
- * @swagger
- * /restaurant/creator/{creator_id}:
- *   get:
- *     summary: Get a restaurant by creator ID
- *     description: Retrieve a restaurant based on the creator's ID.
- *     tags: [Restaurant]
- *     parameters:
- *       - in: path
- *         name: creator_id
- *         required: true
- *         description: The unique identifier of the restaurant's creator.
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Successfully retrieved the restaurant
- *       404:
- *         description: Restaurant not found
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Detailed error message.
- *                   example: 'Restaurant not found'
- *       400:
- *         description: Bad request or validation error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   description: Detailed error message.
- *                   example: 'Invalid request'
- *     security:
- *       - BearerAuth: []
- */
 restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId);
 
 /**
