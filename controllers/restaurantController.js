@@ -106,13 +106,12 @@ const restaurantController = {
     }
   },
 
-  // PUT /restaurant/:id
+  // PUT /restaurant/:restaurantId
   update: async (req, res) => {
-    const { id } = req.params;
-
+    const { restaurantId } = req.params;
     try {
     // Vérifier si l'article existe
-      const restaurant = await Restaurant.findById(id);
+      const restaurant = await Restaurant.findById(restaurantId);
       if (!restaurant) {
         return res.status(404).json({ message: 'Pas de restaurant trouvé' });
       }
@@ -134,7 +133,7 @@ const restaurantController = {
       logger.log('info', `Restaurant modifié : ${updatedRestaurant._id}`);
       return res.json(updatedRestaurant);
     } catch (err) {
-      return res.status(400).json({ message: err.message });
+      return res.status(400).json({ message: 'ID restaurant invalide' });
     }
   },
 
@@ -179,7 +178,7 @@ const restaurantController = {
     try {
       const count = await Restaurant.countDocuments({});
       if (count === 0) {
-        return res.status(404).json({ message: 'Pas de restaurants trouvés' });
+        return res.status(404).json({ message: 'Aucun restaurant trouvé' });
       }
 
       const restaurants = await Restaurant.find({}).limit(limit).skip(skip);
@@ -191,6 +190,22 @@ const restaurantController = {
       return res.status(200).json({ restaurants, maxPage, count });
     } catch (err) {
       return res.status(400).json({ message: err.message });
+    }
+  },
+
+  // DELETE /restaurant/:restaurantId
+  delete: async (req, res) => {
+    const { restaurantId } = req.params;
+    try {
+      const restaurant = await Restaurant.findByIdAndDelete(restaurantId);
+
+      if (!restaurant) {
+        return res.status(404).json({ message: 'Restaurant non trouvé' });
+      }
+      logger.log('info', `Restaurant supprimé : ${restaurant._id}`);
+      return res.json({ message: 'Restaurant supprimé avec succès' });
+    } catch (err) {
+      return res.status(400).json({ message: 'ID restaurant invalide' });
     }
   },
 };
