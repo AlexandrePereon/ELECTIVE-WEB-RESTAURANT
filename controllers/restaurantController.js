@@ -156,6 +156,21 @@ const restaurantController = {
     }
   },
 
+  // GET /restaurant/:restaurantID
+  getRestaurantById: async (req, res) => {
+    const { restaurantId } = req.params;
+
+    try {
+      const restaurant = await Restaurant.findById(restaurantId);
+      if (!restaurant) {
+        return res.status(404).json({ message: 'Restaurant non trouvé' });
+      }
+      return res.json(restaurant);
+    } catch (err) {
+      return res.status(400).json({ message: 'ID du restaurant invalide' });
+    }
+  },
+
   // GET /restaurant/all/:page
   findAllRestaurants: async (req, res) => {
     const { page } = req.params || 1;

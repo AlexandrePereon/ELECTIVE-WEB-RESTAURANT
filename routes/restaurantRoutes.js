@@ -265,4 +265,41 @@ restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId
  */
 restaurantRouter.get('/all/:page', restaurantController.findAllRestaurants);
 
+/**
+ * @swagger
+ * /restaurant/{restaurantId}:
+ *   get:
+ *     summary: Get a restaurant by ID
+ *     description: This endpoint retrieves a restaurant by its unique identifier.
+ *     tags: [Restaurant]
+ *     parameters:
+ *       - in: path
+ *         name: restaurantId
+ *         required: true
+ *         description: The unique identifier of the restaurant.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the restaurant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Restaurant'
+ *       404:
+ *         description: Restaurant not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Restaurant not found'
+ *     security:
+ *       - BearerAuth: []
+ */
+restaurantRouter.get('/:restaurantId', restaurantController.getRestaurantById);
+
 export default restaurantRouter;
