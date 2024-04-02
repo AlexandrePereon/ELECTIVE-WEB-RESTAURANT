@@ -131,10 +131,7 @@ const menuController = {
         menu.articles = articles.map((article) => article._id);
       }
 
-      let { image } = req.body;
-      if (image) {
-        image = await image2WebpProduits(image);
-      }
+      const image = await image2WebpProduits(req.body.image);
 
       // Mettre à jour les informations du menu
       menu.name = req.body.name || menu.name;

@@ -31,10 +31,7 @@ const restaurantController = {
       });
     }
 
-    let { image } = req.body;
-    if (image) {
-      image = await image2WebpRestaurant(image);
-    }
+    const image = await image2WebpRestaurant(req.body.image);
 
     // create new restaurant
     const restaurant = new Restaurant({

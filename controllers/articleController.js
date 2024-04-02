@@ -17,10 +17,7 @@ const articleController = {
       });
     }
 
-    let { image } = req.body;
-    if (image) {
-      image = await image2WebpProduits(image);
-    }
+    const image = await image2WebpProduits(req.body.image);
 
     // Créer un nouvel article
     const article = new Article({

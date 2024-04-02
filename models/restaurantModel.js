@@ -10,8 +10,7 @@ const Restaurant = mongoose.model('Restaurant', {
   image: {
     type: String,
     required: true,
-    unique: true,
-    trim: true,
+    unique: false,
   },
   description: {
     type: String,
