@@ -197,7 +197,6 @@ const restaurantController = {
   // DELETE /restaurant/:restaurantId
   delete: async (req, res) => {
     const { restaurantId } = req.params;
-    console.log(req.headers);
     try {
       const restaurant = await Restaurant.findByIdAndDelete(restaurantId);
       await authClient.deleteUserRestaurant(req.headers.authorization);
