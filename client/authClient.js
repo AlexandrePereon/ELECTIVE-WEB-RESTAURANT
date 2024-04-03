@@ -7,6 +7,7 @@ const authClient = {
     try {
       const axiosReq = axios.create({
         baseURL: `http://elective-web-auth:3000`,
+        headers: JSON.parse(headerData),      
       });
 
       const response = await axiosReq.delete(`/auth/restaurant/delete`);
