@@ -10,7 +10,7 @@ const authClient = {
         headers: JSON.parse(headerData),      
       });
 
-      const response = await axiosReq.delete(`/auth/delete/restaurant`);
+      const response = await axiosReq.delete(`/auth/restaurant/delete`);
       logger.log('info', `data :  ${response}`);
       return response.data;
     } catch (error) {
