@@ -3,6 +3,7 @@ import Article from '../models/articleModel.js';
 import Menu from '../models/menuModel.js';
 import logger from '../utils/logger/logger.js';
 import { image2WebpRestaurant } from '../utils/converter/imageConverter.js';
+import authClient from '../client/authClient.js';
 
 const restaurantController = {
   // POST /restaurant/create
@@ -198,6 +199,7 @@ const restaurantController = {
     const { restaurantId } = req.params;
     try {
       const restaurant = await Restaurant.findByIdAndDelete(restaurantId);
+      await authClient.deleteUserRestaurant(req.headers['x-user']);
 
       if (!restaurant) {
         return res.status(404).json({ message: 'Restaurant non trouvé' });
