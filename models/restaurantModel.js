@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
+import Article from './articleModel.js';
+import Menu from './menuModel.js';
 
-const Restaurant = mongoose.model('Restaurant', {
+const { Schema } = mongoose;
+
+const RestaurantSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -10,8 +14,7 @@ const Restaurant = mongoose.model('Restaurant', {
   image: {
     type: String,
     required: true,
-    unique: true,
-    trim: true,
+    unique: false,
   },
   description: {
     type: String,
@@ -26,5 +29,18 @@ const Restaurant = mongoose.model('Restaurant', {
     trim: true,
   },
 });
+
+RestaurantSchema.pre('findOneAndDelete', async function (next) {
+  try {
+    const restaurant = this.getFilter();
+    await Article.deleteMany({ restaurant_id: restaurant._id });
+    await Menu.deleteMany({ restaurant_id: restaurant._id });
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+const Restaurant = mongoose.model('Restaurant', RestaurantSchema);
 
 export default Restaurant;

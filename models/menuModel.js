@@ -15,7 +15,7 @@ const Menu = mongoose.model('Menu', {
   },
   image: {
     type: String,
-    required: true,
+    required: false,
     unique: false,
     trim: true,
   },

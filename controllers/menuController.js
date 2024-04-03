@@ -11,18 +11,19 @@ const menuController = {
     // Vérifier qu'il y a plusieurs articles
     if (!Array.isArray(req.body.articles) || req.body.articles.length < 2) {
       return res.status(400).json({
-        message: 'A menu should have at least two articles',
+        message: 'Un menu doit au moins contenir 2 articles',
       });
     }
 
-    // Vérifier si un article avec le même nom existe déjà
+    // Vérifier si un menu avec le même nom existe déjà
     const menuExists = await Menu.findOne({
-      $or: [{ name: req.body.name }],
+      name: req.body.name,
+      restaurant_id: restaurant.id,
     });
 
     if (menuExists) {
       return res.status(400).json({
-        message: 'This menu already exists',
+        message: 'Ce menu existe déjà',
       });
     }
 
@@ -32,13 +33,13 @@ const menuController = {
         const article = await Article.findById(articleId);
         if (!article) {
           return res.status(400).json({
-            message: 'Article not found',
+            message: 'Article non trouvé',
           });
         }
         if (!article.restaurant_id.equals(restaurant.id)) {
           console.log(article.restaurant_id, restaurant.id);
           return res.status(400).json({
-            message: 'All articles should belong to the same restaurant',
+            message: 'Tous les articles doivent appartient au même restaurant',
           });
         }
         return article;
@@ -73,44 +74,44 @@ const menuController = {
     }
   },
 
-  // GET /menus/:id
+  // GET /menus/:menuId
   read: async (req, res) => {
-    const { id } = req.params;
+    const { menuId } = req.params;
 
     try {
-      const menu = await Menu.findById(id).populate('articles');
+      const menu = await Menu.findById(menuId).populate('articles');
       if (!menu) {
-        return res.status(404).json({ message: 'Menu not found' });
+        return res.status(404).json({ message: 'Menu non trouvé' });
       }
       return res.json(menu);
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }
   },
-  // DELETE /menu/:id
+  // DELETE /menu/:menuId
   delete: async (req, res) => {
-    const { id } = req.params;
+    const { menuId } = req.params;
     try {
-      const menu = await Menu.findByIdAndDelete(id);
+      const menu = await Menu.findByIdAndDelete(menuId);
       if (!menu) {
-        return res.status(404).json({ message: 'Menu not found' });
+        return res.status(404).json({ message: 'Menu non trouvé' });
       }
       logger.log('info', `Menu supprimé : ${menu._id}`);
-      return res.json({ message: 'Menu deleted successfully' });
+      return res.json({ message: 'Menu supprimé avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }
   },
 
   update: async (req, res) => {
-    const { id } = req.params;
+    const { menuId } = req.params;
     const { restaurant } = req;
 
     try {
       // Vérifier si le menu existe
-      const menu = await Menu.findById(id);
+      const menu = await Menu.findById(menuId);
       if (!menu) {
-        return res.status(404).json({ message: 'Menu not found' });
+        return res.status(404).json({ message: 'Menu non trouvé' });
       }
 
       if (req.body.articles) {
@@ -118,10 +119,10 @@ const menuController = {
         const articlePromises = req.body.articles.map(async (articleId) => {
           const article = await Article.findById(articleId);
           if (!article) {
-            return res.status(400).json({ message: 'Article not found' });
+            return res.status(400).json({ message: 'Article non trouvé' });
           }
           if (!article.restaurant_id.equals(restaurant.id)) {
-            return res.status(400).json({ message: 'All articles should belong to the same restaurant' });
+            return res.status(400).json({ message: 'Tous les articles doivent appartenir au même restaurant' });
           }
           return article;
         });
@@ -134,6 +135,18 @@ const menuController = {
       let { image } = req.body;
       if (image) {
         image = await image2WebpProduits(image);
+      }
+
+      const { name } = req.body;
+      if (name) {
+        const existingName = await Menu.findOne({
+          name,
+          restaurant_id: restaurant.id,
+        });
+
+        if (existingName) {
+          return res.status(404).json({ message: 'Nom déjà présent dans les menus' });
+        }
       }
 
       // Mettre à jour les informations du menu

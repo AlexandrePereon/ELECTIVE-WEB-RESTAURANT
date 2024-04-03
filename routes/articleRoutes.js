@@ -6,17 +6,17 @@ import hasRestaurantMiddleware from '../middlewares/hasRestaurantMiddleware.js';
 
 const articleRouter = express.Router();
 const BASE_URL = '/article';
-// GET /article/:id
+// GET /article/:articleId
 /**
  * @swagger
- * /restaurant/article/{id}:
+ * /restaurant/article/{articleId}:
  *   get:
  *     summary: Get an article by ID
  *     description: This endpoint retrieves an article by its unique identifier.
  *     tags: [Article]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: articleId
  *         required: true
  *         description: The unique identifier of the article.
  *         schema:
@@ -38,19 +38,19 @@ const BASE_URL = '/article';
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.get(`${BASE_URL}/:id`, articleController.read);
+articleRouter.get(`${BASE_URL}/:articleId`, articleController.read);
 
-// DELETE /article/:id
+// DELETE /article/:articleId
 /**
  * @swagger
- * /restaurant/article/{id}:
+ * /restaurant/article/{articleId}:
  *   delete:
  *     summary: Delete an article by ID
  *     description: This endpoint deletes an article by its unique identifier.
  *     tags: [Article]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: articleId
  *         required: true
  *         description: The unique identifier of the article.
  *         schema:
@@ -81,7 +81,7 @@ articleRouter.get(`${BASE_URL}/:id`, articleController.read);
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, articleController.delete);
+articleRouter.delete(`${BASE_URL}/:articleId`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, articleController.delete);
 
 // POST /article/create
 /**
@@ -103,16 +103,12 @@ articleRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, 
  *             type: object
  *             required:
  *               - name
- *               - image
  *               - description
  *               - price
  *             properties:
  *               name:
  *                 type: string
  *                 example: 'Article XYZ'
- *               image:
- *                 type: string
- *                 example: 'https://example.com/article.jpg'
  *               description:
  *                 type: string
  *                 example: 'This is a fantastic article.'
@@ -163,14 +159,14 @@ articleRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware,
 
 /**
  * @swagger
- * /restaurant/article/{id}:
+ * /restaurant/article/{articleId}:
  *   put:
  *     summary: Update an article by ID
  *     description: This endpoint updates an existing article by its unique identifier.
  *     tags: [Article]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: articleId
  *         required: true
  *         description: The unique identifier of the article to update.
  *         schema:
@@ -185,9 +181,6 @@ articleRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware,
  *               name:
  *                 type: string
  *                 description: The updated name of the article.
- *               image:
- *                 type: string
- *                 description: The updated image URL of the article.
  *               description:
  *                 type: string
  *                 description: The updated description of the article.
@@ -253,6 +246,6 @@ articleRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware,
  *     security:
  *       - BearerAuth: []
  */
-articleRouter.put(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, articleController.update);
+articleRouter.put(`${BASE_URL}/:articleId`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, articleController.update);
 
 export default articleRouter;

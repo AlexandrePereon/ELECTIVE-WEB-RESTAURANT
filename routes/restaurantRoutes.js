@@ -16,7 +16,7 @@ const restaurantRouter = express.Router();
  *       This endpoint creates a new restaurant with the provided name, image, description, and creator id.
  *       It checks if a restaurant with the same name already exists to avoid duplicates.
  *       Upon successful creation, it returns the unique identifier of the new restaurant.
- *     tags: [Restaurant]
+ *     tags: [Restaurant Actions]
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -27,15 +27,11 @@ const restaurantRouter = express.Router();
  *             type: object
  *             required:
  *               - name
- *               - image
  *               - description
  *             properties:
  *               name:
  *                 type: string
  *                 example: "Restaurant ABC"
- *               image:
- *                 type: string
- *                 example: "https://example.com/restaurant.jpg"
  *               description:
  *                 type: string
  *                 example: "This is a fantastic restaurant."
@@ -75,7 +71,7 @@ restaurantRouter.post('/create', authMiddleware, isRestaurantMiddleware, hasNotR
  *   get:
  *     summary: Get all articles of a restaurant
  *     description: This endpoint retrieves all articles belonging to a specific restaurant.
- *     tags: [Restaurant]
+ *     tags: [Restaurant Infos]
  *     parameters:
  *       - in: path
  *         name: restaurantId
@@ -114,7 +110,7 @@ restaurantRouter.get('/:restaurantId/articles/:page', restaurantController.findA
  *   get:
  *     summary: Get all menus of a restaurant
  *     description: This endpoint retrieves all menus belonging to a specific restaurant.
- *     tags: [Restaurant]
+ *     tags: [Restaurant Infos]
  *     parameters:
  *       - in: path
  *         name: restaurantId
@@ -149,14 +145,13 @@ restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllM
 
 /**
  * @swagger
- * /restaurant/{id}:
+ * /restaurant/{restaurantId}:
  *   put:
  *     summary: Update a restaurant by ID
  *     description: This endpoint updates an existing restaurant by its unique identifier.
- *     tags: [Restaurant]
+ *     tags: [Restaurant Actions]
  *     parameters:
  *       - in: path
- *         name: id
  *         required: true
  *         description: The unique identifier of the restaurant to update.
  *         schema:
@@ -171,9 +166,6 @@ restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllM
  *               name:
  *                 type: string
  *                 description: The updated name of the restaurant.
- *               image:
- *                 type: string
- *                 description: The updated image URL of the restaurant.
  *               description:
  *                 type: string
  *                 description: The updated description of the restaurant.
@@ -228,7 +220,7 @@ restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllM
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.put('/:id', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.update);
+restaurantRouter.put('/:restaurantId', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.update);
 
 restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId);
 
@@ -238,7 +230,7 @@ restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId
  *   get:
  *     summary: Get all restaurants
  *     description: This endpoint retrieves all restaurants available in the system.
- *     tags: [Restaurant]
+ *     tags: [Restaurant Infos]
  *     parameters:
  *       - in: path
  *         name: page
@@ -264,5 +256,84 @@ restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId
  *       - BearerAuth: []
  */
 restaurantRouter.get('/all/:page', restaurantController.findAllRestaurants);
+
+/**
+ * @swagger
+ * /restaurant/{restaurantId}:
+ *   get:
+ *     summary: Get a restaurant by ID
+ *     description: This endpoint retrieves a restaurant by its unique identifier.
+ *     tags: [Restaurant Infos]
+ *     parameters:
+ *       - in: path
+ *         name: restaurantId
+ *         required: true
+ *         description: The unique identifier of the restaurant.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the restaurant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Restaurant'
+ *       404:
+ *         description: Restaurant not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Restaurant not found'
+ *     security:
+ *       - BearerAuth: []
+ */
+restaurantRouter.get('/:restaurantId', restaurantController.getRestaurantById);
+
+/**
+ * @swagger
+ * /restaurant/{restaurantId}:
+ *   delete:
+ *     summary: Delete a restaurant by ID
+ *     description: This endpoint deletes a restaurant by its unique identifier.
+ *     tags: [Restaurant Actions]
+ *     parameters:
+ *       - in: path
+ *         name: restaurantId
+ *         required: true
+ *         description: The unique identifier of the restaurant.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successfully deleted the restaurant
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Success message.
+ *                   example: 'Restaurant deleted successfully'
+ *       404:
+ *         description: Restaurant not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Detailed error message.
+ *                   example: 'Restaurant not found'
+ *     security:
+ *       - BearerAuth: []
+ */
+restaurantRouter.delete('/:restaurantId', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.delete);
 
 export default restaurantRouter;

@@ -1,4 +1,5 @@
 import sharp from 'sharp';
+import fs from 'fs/promises';
 import logger from '../logger/logger.js';
 
 export const ImageSizes = {
@@ -6,9 +7,17 @@ export const ImageSizes = {
   RESTAURANT_IMAGE_SIZE: { width: 1280, height: 720 },
 };
 
-// Définir la fonction convertToWebP
 async function convertToWebP(base64Image, size) {
   try {
+    if (!base64Image) {
+      // Lire l'image en tant que buffer
+      const buffer = await fs.readFile('./utils/converter/blank_image.jpg');
+
+      // Convertir le buffer en base64
+      // eslint-disable-next-line no-param-reassign
+      base64Image = buffer.toString('base64');
+    }
+
     // Convertir la base64 en Buffer
     const buffer = Buffer.from(base64Image, 'base64');
 

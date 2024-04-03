@@ -8,19 +8,17 @@ const articleController = {
     const { restaurant } = req;
     // Vérifier si un article avec le même nom existe déjà
     const articleExists = await Article.findOne({
-      $or: [{ name: req.body.name }],
+      name: req.body.name,
+      restaurant_id: restaurant.id,
     });
 
     if (articleExists) {
       return res.status(400).json({
-        message: 'This article already exists',
+        message: 'Cet article existe déjà',
       });
     }
 
-    let { image } = req.body;
-    if (image) {
-      image = await image2WebpProduits(image);
-    }
+    const image = await image2WebpProduits(req.body.image);
 
     // Créer un nouvel article
     const article = new Article({
@@ -40,14 +38,14 @@ const articleController = {
     }
   },
 
-  // GET /article/:id
+  // GET /article/:articleId
   read: async (req, res) => {
-    const { id } = req.params;
+    const { articleId } = req.params;
 
     try {
-      const article = await Article.findById(id);
+      const article = await Article.findById(articleId);
       if (!article) {
-        return res.status(404).json({ message: 'Article not found' });
+        return res.status(404).json({ message: 'Article non trouvé' });
       }
       return res.json(article);
     } catch (err) {
@@ -55,31 +53,44 @@ const articleController = {
     }
   },
 
-  // DELETE /article/:id
+  // DELETE /article/:articleId
   delete: async (req, res) => {
-    const { id } = req.params;
+    const { articleId } = req.params;
     try {
-      const article = await Article.findByIdAndDelete(id);
+      const article = await Article.findByIdAndDelete(articleId);
       if (!article) {
-        return res.status(404).json({ message: 'Article not found' });
+        return res.status(404).json({ message: 'Article non trouvé' });
       }
       logger.log('info', `Article supprimé : ${article._id}`);
 
-      return res.json({ message: 'Article deleted successfully' });
+      return res.json({ message: 'Article supprimé avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }
   },
 
-  // PUT /article/:id
+  // PUT /article/:articleId
   update: async (req, res) => {
-    const { id } = req.params;
+    const { articleId } = req.params;
+    const { restaurant } = req;
 
     try {
     // Vérifier si l'article existe
-      const article = await Article.findById(id);
+      const article = await Article.findById(articleId);
       if (!article) {
-        return res.status(404).json({ message: 'Article not found' });
+        return res.status(404).json({ message: 'Article non trouvé' });
+      }
+
+      const { name } = req.body;
+      if (name) {
+        const existingName = await Article.findOne({
+          name,
+          restaurant_id: restaurant.id,
+        });
+
+        if (existingName) {
+          return res.status(404).json({ message: 'Nom déjà présent dans les articles' });
+        }
       }
 
       let { image } = req.body;
@@ -88,7 +99,7 @@ const articleController = {
       }
 
       // Mettre à jour les informations de l'article
-      article.name = req.body.name || article.name;
+      article.name = name || article.name;
       article.image = image || article.image;
       article.description = req.body.description || article.description;
       article.price = req.body.price || article.price;

@@ -29,16 +29,12 @@ const BASE_URL = '/menu';
  *             type: object
  *             required:
  *               - name
- *               - image
  *               - description
  *               - articles
  *             properties:
  *               name:
  *                 type: string
  *                 example: "Menu ABC"
- *               image:
- *                 type: string
- *                 example: "https://example.com/menu.jpg"
  *               description:
  *                 type: string
  *                 example: "This is a fantastic menu."
@@ -86,14 +82,14 @@ menuRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware, ha
 
 /**
  * @swagger
- * /restaurant/menu/{id}:
+ * /restaurant/menu/{menuId}:
  *   get:
  *     summary: Get a menu by ID
  *     description: This endpoint retrieves a menu by its unique identifier.
  *     tags: [Menu]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: menuId
  *         required: true
  *         description: The unique identifier of the menu.
  *         schema:
@@ -115,18 +111,18 @@ menuRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware, ha
  *     security:
  *       - BearerAuth: []
  */
-menuRouter.get(`${BASE_URL}/:id`, menuController.read);
+menuRouter.get(`${BASE_URL}/:menuId`, menuController.read);
 
 /**
  * @swagger
- * /restaurant/menu/{id}:
+ * /restaurant/menu/{menuId}:
  *   delete:
  *     summary: Delete a menu by ID
  *     description: This endpoint deletes a menu by its unique identifier.
  *     tags: [Menu]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: menuId
  *         required: true
  *         description: The unique identifier of the menu.
  *         schema:
@@ -157,18 +153,18 @@ menuRouter.get(`${BASE_URL}/:id`, menuController.read);
  *     security:
  *       - BearerAuth: []
  */
-menuRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, menuController.delete);
+menuRouter.delete(`${BASE_URL}/:menuId`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, menuController.delete);
 
 /**
  * @swagger
- * /restaurant/menu/{id}:
+ * /restaurant/menu/{menuId}:
  *   put:
  *     summary: Update a menu by ID
  *     description: This endpoint updates an existing menu by its unique identifier.
  *     tags: [Menu]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: menuId
  *         required: true
  *         description: The unique identifier of the menu to update.
  *         schema:
@@ -183,9 +179,6 @@ menuRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, has
  *               name:
  *                 type: string
  *                 description: The updated name of the menu.
- *               image:
- *                 type: string
- *                 description: The updated image URL of the menu.
  *               description:
  *                 type: string
  *                 description: The updated description of the menu.
@@ -261,6 +254,6 @@ menuRouter.delete(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, has
  *     security:
  *       - BearerAuth: []
  */
-menuRouter.put(`${BASE_URL}/:id`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, menuController.update);
+menuRouter.put(`${BASE_URL}/:menuId`, authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, menuController.update);
 
 export default menuRouter;
