@@ -197,9 +197,10 @@ const restaurantController = {
   // DELETE /restaurant/:restaurantId
   delete: async (req, res) => {
     const { restaurantId } = req.params;
+    console.log(req.headers);
     try {
       const restaurant = await Restaurant.findByIdAndDelete(restaurantId);
-      await authClient.deleteUserRestaurant(req.headers['x-user']);
+      await authClient.deleteUserRestaurant(req.headers.authorization);
 
       if (!restaurant) {
         return res.status(404).json({ message: 'Restaurant non trouvé' });

@@ -6,11 +6,11 @@ const authClient = {
   deleteUserRestaurant: async (headerData) => {
     try {
       const axiosReq = axios.create({
-        baseURL: `http://app.localhost/auth`,
+        baseURL: `http://elective-web-auth:3000`,
         headers: JSON.parse(headerData),      
       });
 
-      const response = await axiosReq.delete(`/restaurant/delete`);
+      const response = await axiosReq.delete(`/auth/restaurant/delete`);
       logger.log('info', `data :  ${response}`);
       return response.data;
     } catch (error) {
