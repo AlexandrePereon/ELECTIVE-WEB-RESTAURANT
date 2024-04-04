@@ -1,6 +1,0 @@
-{
-    "authentURL": "elective-web-auth",
-    "authentPORT": "3000",
-    "authentPREFIX": "/auth",
-    "deleteUserRestaurant": "/delete/restaurant"
-}

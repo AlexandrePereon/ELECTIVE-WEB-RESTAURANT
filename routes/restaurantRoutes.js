@@ -145,17 +145,11 @@ restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllM
 
 /**
  * @swagger
- * /restaurant/{restaurantId}:
+ * /restaurant:
  *   put:
  *     summary: Update a restaurant by ID
  *     description: This endpoint updates an existing restaurant by its unique identifier.
  *     tags: [Restaurant Actions]
- *     parameters:
- *       - in: path
- *         required: true
- *         description: The unique identifier of the restaurant to update.
- *         schema:
- *           type: string
  *     requestBody:
  *       required: true
  *       content:
@@ -220,7 +214,7 @@ restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllM
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.put('/:restaurantId', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.update);
+restaurantRouter.put('', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.update);
 
 restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId);
 
@@ -296,18 +290,11 @@ restaurantRouter.get('/:restaurantId', restaurantController.getRestaurantById);
 
 /**
  * @swagger
- * /restaurant/{restaurantId}:
+ * /restaurant:
  *   delete:
  *     summary: Delete a restaurant by ID
  *     description: This endpoint deletes a restaurant by its unique identifier.
  *     tags: [Restaurant Actions]
- *     parameters:
- *       - in: path
- *         name: restaurantId
- *         required: true
- *         description: The unique identifier of the restaurant.
- *         schema:
- *           type: string
  *     responses:
  *       200:
  *         description: Successfully deleted the restaurant
@@ -334,6 +321,6 @@ restaurantRouter.get('/:restaurantId', restaurantController.getRestaurantById);
  *     security:
  *       - BearerAuth: []
  */
-restaurantRouter.delete('/:restaurantId', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.delete);
+restaurantRouter.delete('', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.delete);
 
 export default restaurantRouter;

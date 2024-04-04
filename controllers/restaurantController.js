@@ -3,7 +3,6 @@ import Article from '../models/articleModel.js';
 import Menu from '../models/menuModel.js';
 import logger from '../utils/logger/logger.js';
 import { image2WebpRestaurant } from '../utils/converter/imageConverter.js';
-import authClient from '../client/authClient.js';
 
 const restaurantController = {
   // POST /restaurant/create
@@ -107,12 +106,15 @@ const restaurantController = {
     }
   },
 
-  // PUT /restaurant/:restaurantId
+  // PUT /restaurant
   update: async (req, res) => {
-    const { restaurantId } = req.params;
     try {
     // Vérifier si l'article existe
-      const restaurant = await Restaurant.findById(restaurantId);
+      const restaurant = await Restaurant.findOne({
+        $or: [
+          { createur_id: req.body.userData.id },
+        ],
+      });
       if (!restaurant) {
         return res.status(404).json({ message: 'Pas de restaurant trouvé' });
       }
@@ -134,7 +136,7 @@ const restaurantController = {
       logger.log('info', `Restaurant modifié : ${updatedRestaurant._id}`);
       return res.json(updatedRestaurant);
     } catch (err) {
-      return res.status(400).json({ message: 'ID restaurant invalide' });
+      return res.status(400).json({ message: err.message });
     }
   },
 
@@ -144,9 +146,6 @@ const restaurantController = {
 
     try {
       const restaurant = await Restaurant.findOne({ createur_id: userId });
-      if (!restaurant) {
-        return res.status(404).json({ message: 'Pas de restaurant trouvé pour cet utilisateur' });
-      }
       return res.json(restaurant);
     } catch (err) {
       return res.status(400).json({ message: err.message });
@@ -194,23 +193,27 @@ const restaurantController = {
     }
   },
 
-  // DELETE /restaurant/:restaurantId
+  // DELETE /restaurant
   delete: async (req, res) => {
-    const { restaurantId } = req.params;
     try {
-      console.log(req.headers);
-      const restaurant = await Restaurant.findByIdAndDelete(restaurantId);
-      await authClient.deleteUserRestaurant(req.headers['x-user']);
+      // Trouver le restaurant à supprimer
+      const restaurant = await Restaurant.findOne({ createur_id: req.body.userData.id });
 
+      // Vérifier si le restaurant existe
       if (!restaurant) {
         return res.status(404).json({ message: 'Restaurant non trouvé' });
       }
+
+      // Supprimer le restaurant
+      await restaurant.deleteOne();
+
       logger.log('info', `Restaurant supprimé : ${restaurant._id}`);
-      return res.json({ message: 'Restaurant supprimé avec succès' });
+      return res.json({ message: `Restaurant [${restaurant._id}] supprimé avec succès` });
     } catch (err) {
-      return res.status(400).json({ message: 'ID restaurant invalide' });
+      return res.status(400).json({ message: 'ID restaurant invalide', err: err.message });
     }
   },
+
 };
 
 export default restaurantController;

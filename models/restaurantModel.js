@@ -30,9 +30,9 @@ const RestaurantSchema = new Schema({
   },
 });
 
-RestaurantSchema.pre('findOneAndDelete', async function (next) {
+RestaurantSchema.pre('deleteOne', { document: true, query: false }, async function (next) {
   try {
-    const restaurant = this.getFilter();
+    const restaurant = this;
     await Article.deleteMany({ restaurant_id: restaurant._id });
     await Menu.deleteMany({ restaurant_id: restaurant._id });
     next();
