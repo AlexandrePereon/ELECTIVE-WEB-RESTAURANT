@@ -86,6 +86,7 @@ const articleController = {
         const existingName = await Article.findOne({
           name,
           restaurant_id: restaurant.id,
+          _id: { $ne: articleId },
         });
 
         if (existingName) {
