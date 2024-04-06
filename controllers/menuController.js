@@ -142,6 +142,7 @@ const menuController = {
         const existingName = await Menu.findOne({
           name,
           restaurant_id: restaurant.id,
+          _id: { $ne: menuId }, // Exclure le menu actuel
         });
 
         if (existingName) {
