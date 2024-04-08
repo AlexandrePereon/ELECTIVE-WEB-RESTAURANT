@@ -128,7 +128,6 @@ const restaurantController = {
       restaurant.name = req.body.name || restaurant.name;
       restaurant.image = image || restaurant.image;
       restaurant.description = req.body.description || restaurant.description;
-      restaurant.price = req.body.price || restaurant.price;
 
       // Enregistrer les modifications
       const updatedRestaurant = await restaurant.save();

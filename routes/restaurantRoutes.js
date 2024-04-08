@@ -150,6 +150,8 @@ restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllM
  *     summary: Update a restaurant by ID
  *     description: This endpoint updates an existing restaurant by its unique identifier.
  *     tags: [Restaurant Actions]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -163,9 +165,6 @@ restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllM
  *               description:
  *                 type: string
  *                 description: The updated description of the restaurant.
- *               price:
- *                 type: number
- *                 description: The updated price of the restaurant.
  *     responses:
  *       200:
  *         description: Successfully updated the restaurant
@@ -186,9 +185,6 @@ restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllM
  *                 description:
  *                   type: string
  *                   description: The updated description of the restaurant.
- *                 price:
- *                   type: number
- *                   description: The updated price of the restaurant.
  *       400:
  *         description: Bad request or validation error
  *         content:
@@ -211,8 +207,6 @@ restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllM
  *                   type: string
  *                   description: Detailed error message.
  *                   example: 'Restaurant not found'
- *     security:
- *       - BearerAuth: []
  */
 restaurantRouter.put('', authMiddleware, isRestaurantMiddleware, hasRestaurantMiddleware, restaurantController.update);
 
