@@ -9,7 +9,7 @@ const restaurantRouter = express.Router();
 
 /**
  * @swagger
- * /restaurant/create:
+ * /api-restaurant/create:
  *   post:
  *     summary: Create a new restaurant
  *     description: >
@@ -67,7 +67,7 @@ restaurantRouter.post('/create', authMiddleware, isRestaurantMiddleware, hasNotR
 
 /**
  * @swagger
- * /restaurant/{restaurantId}/articles/{page}:
+ * /api-restaurant/{restaurantId}/articles/{page}:
  *   get:
  *     summary: Get all articles of a restaurant
  *     description: This endpoint retrieves all articles belonging to a specific restaurant.
@@ -106,7 +106,7 @@ restaurantRouter.get('/:restaurantId/articles/:page', restaurantController.findA
 
 /**
  * @swagger
- * /restaurant/{restaurantId}/menus/{page}:
+ * /api-restaurant/{restaurantId}/menus/{page}:
  *   get:
  *     summary: Get all menus of a restaurant
  *     description: This endpoint retrieves all menus belonging to a specific restaurant.
@@ -214,7 +214,7 @@ restaurantRouter.get('/creator/:creator_id', restaurantController.getByCreatorId
 
 /**
  * @swagger
- * /restaurant/all/{page}:
+ * /api-restaurant/all/{page}:
  *   get:
  *     summary: Get all restaurants
  *     description: This endpoint retrieves all restaurants available in the system.
@@ -247,7 +247,7 @@ restaurantRouter.get('/all/:page', restaurantController.findAllRestaurants);
 
 /**
  * @swagger
- * /restaurant/{restaurantId}:
+ * /api-restaurant/{restaurantId}:
  *   get:
  *     summary: Get a restaurant by ID
  *     description: This endpoint retrieves a restaurant by its unique identifier.

@@ -9,7 +9,7 @@ const BASE_URL = '/menu';
 
 /**
  * @swagger
- * /restaurant/menu/create:
+ * /api-restaurant/menu/create:
  *   post:
  *     summary: Create a new menu
  *     description: >
@@ -82,7 +82,7 @@ menuRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware, ha
 
 /**
  * @swagger
- * /restaurant/menu/{menuId}:
+ * /api-restaurant/menu/{menuId}:
  *   get:
  *     summary: Get a menu by ID
  *     description: This endpoint retrieves a menu by its unique identifier.
@@ -115,7 +115,7 @@ menuRouter.get(`${BASE_URL}/:menuId`, menuController.read);
 
 /**
  * @swagger
- * /restaurant/menu/{menuId}:
+ * /api-restaurant/menu/{menuId}:
  *   delete:
  *     summary: Delete a menu by ID
  *     description: This endpoint deletes a menu by its unique identifier.
@@ -157,7 +157,7 @@ menuRouter.delete(`${BASE_URL}/:menuId`, authMiddleware, isRestaurantMiddleware,
 
 /**
  * @swagger
- * /restaurant/menu/{menuId}:
+ * /api-restaurant/menu/{menuId}:
  *   put:
  *     summary: Update a menu by ID
  *     description: This endpoint updates an existing menu by its unique identifier.

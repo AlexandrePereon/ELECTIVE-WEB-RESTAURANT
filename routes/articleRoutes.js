@@ -9,7 +9,7 @@ const BASE_URL = '/article';
 // GET /article/:articleId
 /**
  * @swagger
- * /restaurant/article/{articleId}:
+ * /api-restaurant/article/{articleId}:
  *   get:
  *     summary: Get an article by ID
  *     description: This endpoint retrieves an article by its unique identifier.
@@ -43,7 +43,7 @@ articleRouter.get(`${BASE_URL}/:articleId`, articleController.read);
 // DELETE /article/:articleId
 /**
  * @swagger
- * /restaurant/article/{articleId}:
+ * /api-restaurant/article/{articleId}:
  *   delete:
  *     summary: Delete an article by ID
  *     description: This endpoint deletes an article by its unique identifier.
@@ -86,7 +86,7 @@ articleRouter.delete(`${BASE_URL}/:articleId`, authMiddleware, isRestaurantMiddl
 // POST /article/create
 /**
  * @swagger
- * /restaurant/article/create:
+ * /api-restaurant/article/create:
  *   post:
  *     summary: Create a new article
  *     description: |
@@ -159,7 +159,7 @@ articleRouter.post(`${BASE_URL}/create`, authMiddleware, isRestaurantMiddleware,
 
 /**
  * @swagger
- * /restaurant/article/{articleId}:
+ * /api-restaurant/article/{articleId}:
  *   put:
  *     summary: Update an article by ID
  *     description: This endpoint updates an existing article by its unique identifier.

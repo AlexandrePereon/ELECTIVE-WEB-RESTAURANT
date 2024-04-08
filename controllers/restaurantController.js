@@ -5,7 +5,7 @@ import logger from '../utils/logger/logger.js';
 import { image2WebpRestaurant } from '../utils/converter/imageConverter.js';
 
 const restaurantController = {
-  // POST /restaurant/create
+  // POST /api-restaurant/create
   create: async (req, res) => {
     const restaurantExists = await Restaurant.findOne({
       $or: [
@@ -50,7 +50,7 @@ const restaurantController = {
     }
   },
 
-  // GET /restaurant/:restaurantId/articles/:page
+  // GET /api-restaurant/:restaurantId/articles/:page
   findAllArticles: async (req, res) => {
     const { page, restaurantId } = req.params || 1;
     const limit = 5;
@@ -79,7 +79,7 @@ const restaurantController = {
     }
   },
 
-  // GET /restaurant/:restaurantId/menus/:page
+  // GET /api-restaurant/:restaurantId/menus/:page
   findAllMenus: async (req, res) => {
     const { page, restaurantId } = req.params || 1;
     const limit = 5;
@@ -139,7 +139,7 @@ const restaurantController = {
     }
   },
 
-  // GET /restaurant/creator/:creator_id
+  // GET /api-restaurant/creator/:creator_id
   getByCreatorId: async (req, res) => {
     const userId = req.params.creator_id;
 
@@ -151,7 +151,7 @@ const restaurantController = {
     }
   },
 
-  // GET /restaurant/:restaurantID
+  // GET /api-restaurant/:restaurantID
   getRestaurantById: async (req, res) => {
     const { restaurantId } = req.params;
 
@@ -166,7 +166,7 @@ const restaurantController = {
     }
   },
 
-  // GET /restaurant/all/:page
+  // GET /api-restaurant/all/:page
   findAllRestaurants: async (req, res) => {
     const { page } = req.params || 1;
     const limit = 5;
