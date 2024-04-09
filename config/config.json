@@ -8,7 +8,7 @@
   "production": {
     "PORT": 3002,
     "MONGODB_URI": "mongodb://mongo:27017/CesiEat",
-    "BASE_URI": "http://app.localhost",
+    "BASE_URI": "https://cesieats.gay",
     "BASE_ENDPOINT": "/api-restaurant"
   }
 }
