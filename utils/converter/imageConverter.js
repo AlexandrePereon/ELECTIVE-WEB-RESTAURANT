@@ -11,7 +11,7 @@ async function convertToWebP(base64Image, size) {
   try {
     if (!base64Image) {
       // Lire l'image en tant que buffer
-      const buffer = await fs.readFile('./utils/converter/blank_image.jpg');
+      const buffer = await fs.readFile('./utils/converter/default.jpg');
 
       // Convertir le buffer en base64
       // eslint-disable-next-line no-param-reassign
