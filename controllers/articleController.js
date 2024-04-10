@@ -5,6 +5,11 @@ import logger from '../utils/logger/logger.js';
 const articleController = {
   // POST /article/create
   create: async (req, res) => {
+    if (!req.body || !req.body.name || !req.body.price) {
+      return res.status(400).json({
+        message: 'Informations manquantes',
+      });
+    }
     const { restaurant } = req;
     // Vérifier si un article avec le même nom existe déjà
     const articleExists = await Article.findOne({
@@ -24,7 +29,7 @@ const articleController = {
     const article = new Article({
       name: req.body.name,
       image,
-      description: req.body.description,
+      description: req.body.description ? req.body.description : '',
       price: req.body.price,
       restaurant_id: restaurant.id,
     });
@@ -109,7 +114,7 @@ const articleController = {
       const updatedArticle = await article.save();
       logger.log('info', `Article modifié : ${article._id}`);
 
-      return res.json(updatedArticle);
+      return res.json({ article: updatedArticle, message: 'Article modifié avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }

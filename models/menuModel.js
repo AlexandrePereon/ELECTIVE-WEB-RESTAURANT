@@ -21,7 +21,7 @@ const Menu = mongoose.model('Menu', {
   },
   description: {
     type: String,
-    required: true,
+    required: false,
     unique: false,
     trim: true,
   },

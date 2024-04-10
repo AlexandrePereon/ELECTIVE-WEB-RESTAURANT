@@ -7,6 +7,11 @@ import { image2WebpRestaurant } from '../utils/converter/imageConverter.js';
 const restaurantController = {
   // POST /api-restaurant/create
   create: async (req, res) => {
+    if (!req.body || !req.body.name) {
+      return res.status(400).json({
+        message: 'Informations manquantes',
+      });
+    }
     const restaurantExists = await Restaurant.findOne({
       $or: [
         { createur_id: req.body.userData.id },
@@ -37,7 +42,7 @@ const restaurantController = {
     const restaurant = new Restaurant({
       name: req.body.name,
       image,
-      description: req.body.description,
+      description: req.body.description ? req.body.description : '',
       createur_id: req.body.userData.id,
     });
 
@@ -133,7 +138,7 @@ const restaurantController = {
       const updatedRestaurant = await restaurant.save();
 
       logger.log('info', `Restaurant modifié : ${updatedRestaurant._id}`);
-      return res.json(updatedRestaurant);
+      return res.json({ restaurant: updatedRestaurant, message: 'Restaurant modifié avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }
