@@ -6,6 +6,12 @@ import { image2WebpProduits } from '../utils/converter/imageConverter.js';
 const menuController = {
   // POST /menu/create
   create: async (req, res) => {
+    if (!req.body || !req.body.name || !req.body.price) {
+      return res.status(400).json({
+        message: 'Informations manquantes',
+      });
+    }
+
     const { restaurant } = req;
 
     // Vérifier qu'il y a plusieurs articles
@@ -59,7 +65,7 @@ const menuController = {
     const menu = new Menu({
       name: req.body.name,
       image,
-      description: req.body.description,
+      description: req.body.description ? req.body.description : '',
       price: req.body.price,
       articles: req.body.articles,
       restaurant_id: restaurant.id,

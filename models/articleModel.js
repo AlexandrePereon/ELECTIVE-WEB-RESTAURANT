@@ -12,12 +12,11 @@ const Article = mongoose.model('Article', {
   image: {
     type: String,
     required: true,
-    unique: true,
     trim: true,
   },
   description: {
     type: String,
-    required: true,
+    required: false,
     unique: false,
     trim: true,
   },
