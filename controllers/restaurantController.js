@@ -138,7 +138,7 @@ const restaurantController = {
       const updatedRestaurant = await restaurant.save();
 
       logger.log('info', `Restaurant modifié : ${updatedRestaurant._id}`);
-      return res.json(updatedRestaurant);
+      return res.json({ restaurant: updatedRestaurant, message: 'Restaurant modifié avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }

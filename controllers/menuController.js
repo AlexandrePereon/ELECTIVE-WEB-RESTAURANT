@@ -166,7 +166,7 @@ const menuController = {
       const updatedMenu = await menu.save();
 
       logger.log('info', `Menu modifié : ${updatedMenu._id}`);
-      return res.json(updatedMenu);
+      return res.json({ menu: updatedMenu, message: 'Menu modifié avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }

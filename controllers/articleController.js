@@ -114,7 +114,7 @@ const articleController = {
       const updatedArticle = await article.save();
       logger.log('info', `Article modifié : ${article._id}`);
 
-      return res.json(updatedArticle);
+      return res.json({ article: updatedArticle, message: 'Article modifié avec succès' });
     } catch (err) {
       return res.status(400).json({ message: err.message });
     }
