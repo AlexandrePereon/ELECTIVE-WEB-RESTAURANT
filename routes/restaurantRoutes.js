@@ -145,7 +145,7 @@ restaurantRouter.get('/:restaurantId/menus/:page', restaurantController.findAllM
 
 /**
  * @swagger
- * /restaurant:
+ * /api-restaurant/restaurant:
  *   put:
  *     summary: Update a restaurant by ID
  *     description: This endpoint updates an existing restaurant by its unique identifier.
@@ -262,10 +262,6 @@ restaurantRouter.get('/all/:page', restaurantController.findAllRestaurants);
  *     responses:
  *       200:
  *         description: Successfully retrieved the restaurant
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Restaurant'
  *       404:
  *         description: Restaurant not found
  *         content:
@@ -284,7 +280,7 @@ restaurantRouter.get('/:restaurantId', restaurantController.getRestaurantById);
 
 /**
  * @swagger
- * /restaurant:
+ * /api-restaurant/restaurant:
  *   delete:
  *     summary: Delete a restaurant by ID
  *     description: This endpoint deletes a restaurant by its unique identifier.
